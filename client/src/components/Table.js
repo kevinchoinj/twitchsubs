@@ -2,7 +2,8 @@ import React, {useState, useMemo} from 'react';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import {Column, Table, AutoSizer, defaultTableRowRenderer} from 'react-virtualized';
-import {filter, compose, sortBy, toLower, prop, reverse} from 'ramda';
+import {assoc, filter, compose, sortBy, toLower, prop, reverse} from 'ramda';
+import HeaderFilter from 'components/HeaderFilter';
 import {connect} from 'react-redux';
 
 const StyledWrapper = styled.div`
@@ -27,6 +28,7 @@ const StyledContainer = styled.div`
     box-sizing: border-box;
     font-size: 14px;
     font-weight: 400;
+    overflow: visible !important;
   }
   .ReactVirtualized__Table__Grid {
     border-left: 1px solid rgba(209, 209, 209, 1);
@@ -69,7 +71,7 @@ const StyledHeader = styled.div`
     justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
     white-space: nowrap;
     text-overflow: ellipsis;
     height: 100%;
@@ -84,15 +86,24 @@ export const StyledRow = styled(defaultTableRowRenderer)`
 `;
 
 export const rowRenderer = (props) => {
-  console.log(props.index);
   return (
     <StyledRow {...props} index={props.index}/>
   );
 };
 
+
 const StyledNote = styled.div`
   font-size: 13px;
 `;
+
+const numberRenderer = ({
+  cellData,
+}) => (
+  <>
+    {cellData.toLocaleString()}
+  </>
+);
+
 const TableContainer = ({data}) => {
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -108,7 +119,13 @@ const TableContainer = ({data}) => {
   , [sorter, data, searchQuery]);
 
   const reversedData = useMemo(() => {
-    if (reversed) {
+    if (reversed && sorter === 'channel') {
+      return reverse(displayData);
+    }
+    else if (sorter === 'channel') {
+      return displayData;
+    }
+    else if (!reversed) {
       return reverse(displayData);
     }
     else {
@@ -129,6 +146,7 @@ const TableContainer = ({data}) => {
       {columns}
     </StyledHeader>
   );
+
   const headerRenderer = ({
     dataKey,
     label,
@@ -150,12 +168,165 @@ const TableContainer = ({data}) => {
     </div>
   );
 
+  const initialColumnsVisible = {
+    channel: true,
+    total_twitch_recorded_earnings: true,
+    subs: true,
+    bits: true,
+    prime_subs: true,
+    gifted_by_broadcaster_tier1_subs: false,
+    gifted_tier1_subs: false,
+    gifted_tier2_subs: false,
+    gifted_tier3_subs: false,
+    tier1_subs: false,
+    tier2_subs: false,
+    tier3_subs: false,
+  };
+  const visibleColumnsArray = [
+    {key: 'channel', label: 'Channel'},
+    {key: 'total_twitch_recorded_earnings', label: 'Earnings'},
+    {key: 'subs', label: 'Subs'},
+    {key: 'bits', label: 'Bits'},
+    {key: 'prime_subs', label: 'Prime Subs'},
+    {key: 'gifted_by_broadcaster_tier1_subs', label: 'Gifted by Streamer'},
+    {key: 'gifted_tier1_subs', label: 'Gifted T1'},
+    {key: 'gifted_tier2_subs', label: 'Gifted T2'},
+    {key: 'gifted_tier3_subs', label: 'Gifted T3'},
+    {key: 'tier1_subs', label: 'T1 Subs'},
+    {key: 'tier2_subs', label: 'T2 Subs'},
+    {key: 'tier3_subs', label: 'T3 Subs'},
+  ];
+
+  const [columnsVisible, setColumnsVisible] = useState(initialColumnsVisible);
+  const toggleColumn = (id, payload) => {
+    setColumnsVisible(prev => assoc(id, payload, prev));
+  }
+  const headerFilterRenderer = () => (
+    <HeaderFilter
+      visibleColumnsArray={visibleColumnsArray}
+      columnsVisible={columnsVisible}
+      toggleColumn={(id, payload) => toggleColumn(id, payload)}
+    />
+  );
+
+  const columns = [
+    {
+      display: columnsVisible.channel,
+      key: 'channel',
+      headerRender: headerRenderer,
+      label: 'Channel',
+      dataKey: 'channel',
+      width: 2000,
+    },
+    {
+      display: columnsVisible.total_twitch_recorded_earnings,
+      key: 'total_twitch_recorded_earnings',
+      headerRender: headerRenderer,
+      label: 'Earnings',
+      dataKey: 'total_twitch_recorded_earnings',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.subs,
+      key: 'subs',
+      headerRender: headerRenderer,
+      label: 'Subs',
+      dataKey: 'subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.bits,
+      key: 'bits',
+      headerRender: headerRenderer,
+      label: 'Bits',
+      dataKey: 'bits',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.prime_subs,
+      key: 'prime_subs',
+      headerRender: headerRenderer,
+      label: 'Prime Subs',
+      dataKey: 'prime_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    //hidden
+    {
+      display: columnsVisible.gifted_by_broadcaster_tier1_subs,
+      key: 'gifted_by_broadcaster_tier1_subs',
+      headerRender: headerRenderer,
+      label: 'Gifted by Streamer',
+      dataKey: 'gifted_by_broadcaster_tier1_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.gifted_tier1_subs,
+      key: 'gifted_tier1_subs',
+      headerRender: headerRenderer,
+      label: 'Gifted T1',
+      dataKey: 'gifted_tier1_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.gifted_tier2_subs,
+      key: 'gifted_tier2_subs',
+      headerRender: headerRenderer,
+      label: 'Gifted T2',
+      dataKey: 'gifted_tier2_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.gifted_tier3_subs,
+      key: 'gifted_tier3_subs',
+      headerRender: headerRenderer,
+      label: 'Gifted T3',
+      dataKey: 'gifted_tier3_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.tier1_subs,
+      key: 'tier1_subs',
+      headerRender: headerRenderer,
+      label: 'T1 Subs',
+      dataKey: 'tier1_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.tier2_subs,
+      key: 'tier2_subs',
+      headerRender: headerRenderer,
+      label: 'T2 Subs',
+      dataKey: 'tier2_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.tier3_subs,
+      key: 'tier3_subs',
+      headerRender: headerRenderer,
+      label: 'T3 Subs',
+      dataKey: 'tier3_subs',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+  ];
   return (
     <StyledWrapper>
       <StyledNote>
         Information about earnings (subscriptions/bits) from Twitch and donations that channels have accrued over the last 30 days. All columns are lower bounds: the real figure should be at least what is recorded here.
         <br/>
         Information is refreshed every 15 minutes.
+        <br/>
+        Earnings listed are only from subs/bits.
       </StyledNote>
       <input
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -176,40 +347,22 @@ const TableContainer = ({data}) => {
               rowGetter={({index}) => reversedData[index]}
             >
               <Column
-                key='channel'
-                headerRenderer={headerRenderer}
-                label='Channel'
-                dataKey='channel'
-                width={2000}
+                key='menu'
+                headerRenderer={headerFilterRenderer}
+                label='Menu'
+                dataKey='menu'
+                width={500}
               />
-              <Column
-                key='total_twitch_recorded_earnings'
-                headerRenderer={headerRenderer}
-                label='Earnings'
-                dataKey='total_twitch_recorded_earnings'
-                width={2000}
-              />
-              <Column
-                key='subs'
-                headerRenderer={headerRenderer}
-                label='Total Subs'
-                dataKey='subs'
-                width={2000}
-              />
-              <Column
-                key='bits'
-                headerRenderer={headerRenderer}
-                label='bits'
-                dataKey='bits'
-                width={2000}
-              />
-              <Column
-                key='prime_subs'
-                headerRenderer={headerRenderer}
-                label='Prime Subs'
-                dataKey='prime_subs'
-                width={2000}
-              />
+              {columns.map(value => {
+                return value.display && (
+                  <Column
+                    label={value.label}
+                    dataKey={value.dataKey}
+                    width={value.width}
+                    headerRenderer={headerRenderer}
+                    cellRenderer={value.cellRenderer}
+                  />
+              )})}
             </Table>
           </StyledContainer>
         )}
