@@ -12,7 +12,15 @@ export default(state=DEFAULT_STATE, payload)=>
   case FETCH_DATA_SUCCEEDED:
     return state = {
       ...state,
-      data: payload.data
+      data: payload?.data?.map((data) => {
+        if (data.subs) {
+        data.percentage_gifted = ((data.gifted_tier1_subs + data.gifted_tier2_subs + data.gifted_tier3_subs)/data.subs)*100;
+        }
+        else {
+          data.percentage_gifted = 0;
+        }
+        return data;
+      })
     };
   default:
     return state;

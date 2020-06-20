@@ -2,7 +2,7 @@ import React, {useState, useMemo} from 'react';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import {Column, Table, AutoSizer, defaultTableRowRenderer} from 'react-virtualized';
-import {assoc, filter, compose, sortBy, toLower, prop, reverse} from 'ramda';
+import {assoc, filter, compose, sortBy, toLower, prop, reverse, map} from 'ramda';
 import HeaderFilter from 'components/HeaderFilter';
 import {connect} from 'react-redux';
 
@@ -18,7 +18,7 @@ const StyledWrapper = styled.div`
     align-self: flex-start;
     margin: 1rem 0;
   }
-  font-family: sans-serif;
+  font-family: 'Open Sans', helvetica, sans-serif;
 `;
 const StyledTableWrapper = styled.div`
   flex: 1;
@@ -91,9 +91,8 @@ export const rowRenderer = (props) => {
   );
 };
 
-
 const StyledNote = styled.div`
-  font-size: 13px;
+  font-size: 14px;
 `;
 
 const numberRenderer = ({
@@ -105,17 +104,18 @@ const numberRenderer = ({
 );
 
 const TableContainer = ({data}) => {
-
   const [searchQuery, setSearchQuery] = useState('');
   const [sorter, setSorter] = useState('channel');
   const [reversed, setReversed] = useState(false);
   const sorterByProp = (propName) => propName !== 'channel' ? sortBy(compose(parseInt, prop(propName))) : sortBy(compose(toLower, prop(propName)));
 
-  const displayData = useMemo(() =>
-    compose(
+  const displayData = useMemo(() =>{
+    return compose(
       filter(val => val?.channel?.toLowerCase().includes(searchQuery.toLowerCase())),
       sorterByProp(sorter),
     )(data)
+    //return map((value) => assoc('percentage_gifted', 5, filteredData));
+  }
   , [sorter, data, searchQuery]);
 
   const reversedData = useMemo(() => {
@@ -181,6 +181,7 @@ const TableContainer = ({data}) => {
     tier1_subs: false,
     tier2_subs: false,
     tier3_subs: false,
+    percentage_gifted: true,
   };
   const visibleColumnsArray = [
     {key: 'channel', label: 'Channel'},
@@ -195,6 +196,7 @@ const TableContainer = ({data}) => {
     {key: 'tier1_subs', label: 'T1 Subs'},
     {key: 'tier2_subs', label: 'T2 Subs'},
     {key: 'tier3_subs', label: 'T3 Subs'},
+    {key: 'percentage_gifted', label: '% Gifted'},
   ];
 
   const [columnsVisible, setColumnsVisible] = useState(initialColumnsVisible);
@@ -318,11 +320,23 @@ const TableContainer = ({data}) => {
       width: 2000,
       cellRenderer: numberRenderer,
     },
+    {
+      display: columnsVisible.percentage_gifted,
+      key: 'percentage_gifted',
+      headerRender: headerRenderer,
+      label: '% Gifted',
+      dataKey: 'percentage_gifted',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+
   ];
   return (
     <StyledWrapper>
       <StyledNote>
-        Information about earnings (subscriptions/bits) from Twitch and donations that channels have accrued over the last 30 days. All columns are lower bounds: the real figure should be at least what is recorded here.
+        Data is from the last 30 days.
+        <br/>
+        <b> All columns are lower bounds: the real figure is HIGHER than what is recorded here.</b>
         <br/>
         Information is refreshed every 15 minutes.
         <br/>
