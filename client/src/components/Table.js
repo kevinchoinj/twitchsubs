@@ -49,6 +49,10 @@ const StyledContainer = styled.div`
     .ReactVirtualized__Table__rowColumn.show_overflow {
       overflow: visible !important;
     }
+    .ReactVirtualized__Table__rowColumn {
+      margin-right: 0;
+      padding: 0 .5rem;
+    }
   }
 `;
 const StyledHeader = styled.div`
@@ -56,7 +60,7 @@ const StyledHeader = styled.div`
   align-items: center;
   width: 800px;
   color: #fff;
-  background-color: #172330;
+  background-color: #1f3041;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   height: 40px;
@@ -79,10 +83,17 @@ const StyledHeader = styled.div`
     transition: .2s ease;
     user-select: none;
   }
+  .ReactVirtualized__Table__headerColumn {
+    margin-right: 0;
+    padding: 0 .5rem;
+    &:hover {
+      background-color: #304964;
+    }
+  }
 `;
 
 export const StyledRow = styled(defaultTableRowRenderer)`
-  background-color: ${props => props.index % 2 === 1 ? '#fafafa' :'#eee'};
+  background-color: ${props => props.index % 2 === 1 ? '#fafafa' :'#dedede'};
 `;
 
 export const rowRenderer = (props) => {
@@ -189,7 +200,7 @@ const TableContainer = ({data}) => {
     {key: 'subs', label: 'Subs'},
     {key: 'bits', label: 'Bits'},
     {key: 'prime_subs', label: 'Prime Subs'},
-    {key: 'gifted_by_broadcaster_tier1_subs', label: 'Gifted by Streamer'},
+    {key: 'gifted_by_broadcaster_tier1_subs', label: 'By Streamer'},
     {key: 'gifted_tier1_subs', label: 'Gifted T1'},
     {key: 'gifted_tier2_subs', label: 'Gifted T2'},
     {key: 'gifted_tier3_subs', label: 'Gifted T3'},
@@ -261,7 +272,7 @@ const TableContainer = ({data}) => {
       display: columnsVisible.gifted_by_broadcaster_tier1_subs,
       key: 'gifted_by_broadcaster_tier1_subs',
       headerRender: headerRenderer,
-      label: 'Gifted by Streamer',
+      label: 'By Streamer',
       dataKey: 'gifted_by_broadcaster_tier1_subs',
       width: 2000,
       cellRenderer: numberRenderer,
@@ -336,7 +347,7 @@ const TableContainer = ({data}) => {
       <StyledNote>
         Data is from the last 30 days.
         <br/>
-        <b> All columns are lower bounds: the real figure is HIGHER than what is recorded here.</b>
+        <b> All columns are lower bounds: the real figure is HIGHER than what is recorded here.</b> (~+10%)
         <br/>
         Information is refreshed every 15 minutes.
         <br/>

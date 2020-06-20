@@ -27,7 +27,7 @@ const StyledLinkWrapper = styled.div`
   border: 1px solid rgba(209, 209, 209, 1);
   z-index: 2;
   line-height: 1.4;
-  padding: 1rem;
+  padding: .5rem 1rem;
   background-color: #fff;
   color: #000;
   min-width: 200px;
