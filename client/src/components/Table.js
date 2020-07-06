@@ -94,6 +94,10 @@ const StyledHeader = styled.div`
 
 export const StyledRow = styled(defaultTableRowRenderer)`
   background-color: ${props => props.index % 2 === 1 ? '#fafafa' :'#dedede'};
+  &:hover {
+    background-color: #666;
+    color: #fff;
+  }
 `;
 
 export const rowRenderer = (props) => {
@@ -179,11 +183,20 @@ const TableContainer = ({data}) => {
     </div>
   );
 
+  const indexRenderer = ({rowIndex}) => {
+    return (
+      <div>
+        {rowIndex}
+      </div>
+    )
+  }
+
   const initialColumnsVisible = {
     channel: true,
     total_twitch_recorded_earnings: true,
     subs: true,
     bits: true,
+    bits_from_extensions: false,
     prime_subs: true,
     gifted_by_broadcaster_tier1_subs: false,
     gifted_tier1_subs: false,
@@ -199,6 +212,7 @@ const TableContainer = ({data}) => {
     {key: 'total_twitch_recorded_earnings', label: 'Earnings'},
     {key: 'subs', label: 'Subs'},
     {key: 'bits', label: 'Bits'},
+    {key: 'bits_from_extensions', label: 'Bits from Ext.'},
     {key: 'prime_subs', label: 'Prime Subs'},
     {key: 'gifted_by_broadcaster_tier1_subs', label: 'By Streamer'},
     {key: 'gifted_tier1_subs', label: 'Gifted T1'},
@@ -255,6 +269,15 @@ const TableContainer = ({data}) => {
       headerRender: headerRenderer,
       label: 'Bits',
       dataKey: 'bits',
+      width: 2000,
+      cellRenderer: numberRenderer,
+    },
+    {
+      display: columnsVisible.bits_from_extensions,
+      key: 'bits_from_extensions',
+      headerRender: headerRenderer,
+      label: 'Bits from Ext.',
+      dataKey: 'bits_from_extensions',
       width: 2000,
       cellRenderer: numberRenderer,
     },
@@ -377,6 +400,7 @@ const TableContainer = ({data}) => {
                 label='Menu'
                 dataKey='menu'
                 width={500}
+                cellRenderer={indexRenderer}
               />
               {columns.map(value => {
                 return value.display && (
