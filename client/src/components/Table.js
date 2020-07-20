@@ -24,6 +24,11 @@ const StyledTableWrapper = styled.div`
   flex: 1;
 `;
 const StyledContainer = styled.div`
+  a {
+    font-weight: 700;
+    text-decoration: none;
+    color: #000;
+  }
   .ReactVirtualized__Table__headerRow {
     box-sizing: border-box;
     font-size: 14px;
@@ -89,6 +94,10 @@ const StyledHeader = styled.div`
     &:hover {
       background-color: #304964;
     }
+    &:first-of-type {
+      padding: 0;
+      margin-right: 18px;
+    }
   }
 `;
 
@@ -97,6 +106,9 @@ export const StyledRow = styled(defaultTableRowRenderer)`
   &:hover {
     background-color: #666;
     color: #fff;
+    a {
+      color: #fff;
+    }
   }
 `;
 
@@ -116,6 +128,17 @@ const numberRenderer = ({
   <>
     {cellData.toLocaleString()}
   </>
+);
+const linkRenderer = ({
+  cellData,
+}) => (
+  <a
+    href={`https://twitch.tv/${cellData}`}
+    target="_blank"
+    rel="noreferrer"
+    >
+    {cellData}
+  </a>
 );
 
 const TableContainer = ({data}) => {
@@ -244,6 +267,7 @@ const TableContainer = ({data}) => {
       label: 'Channel',
       dataKey: 'channel',
       width: 2000,
+      cellRenderer: linkRenderer,
     },
     {
       display: columnsVisible.total_twitch_recorded_earnings,
