@@ -112,6 +112,15 @@ export const StyledRow = styled(defaultTableRowRenderer)`
   }
 `;
 
+const StyledLoading = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const rowRenderer = (props) => {
   return (
     <StyledRow {...props} index={props.index}/>
@@ -441,6 +450,11 @@ const TableContainer = ({data}) => {
         )}
       </AutoSizer>
       </StyledTableWrapper>
+      {!data &&
+        <StyledLoading>
+          Loading Data for 2000+ streamers...
+        </StyledLoading>
+      }
     </StyledWrapper>
   );
 };
