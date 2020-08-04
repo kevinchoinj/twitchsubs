@@ -138,6 +138,13 @@ const numberRenderer = ({
     {cellData.toLocaleString()}
   </>
 );
+const moneyRenderer = ({
+  cellData,
+}) => (
+  <>
+    ${cellData.toLocaleString()}
+  </>
+);
 const linkRenderer = ({
   cellData,
 }) => (
@@ -226,8 +233,8 @@ const TableContainer = ({data}) => {
   const initialColumnsVisible = {
     channel: true,
     estimated_earnings: true,
-    recorded_subs: true,
-    estimated_subs: false,
+    recorded_subs: false,
+    estimated_subs: true,
     bits: true,
     bits_from_extensions: false,
     recorded_prime_subs: true,
@@ -286,10 +293,10 @@ const TableContainer = ({data}) => {
       display: columnsVisible.estimated_earnings,
       key: 'estimated_earnings',
       headerRender: headerRenderer,
-      label: 'Earnings (Subs/Bits)',
+      label: 'Earnings',
       dataKey: 'estimated_earnings',
       width: 2000,
-      cellRenderer: numberRenderer,
+      cellRenderer: moneyRenderer,
     },
     {
       display: columnsVisible.recorded_subs,
@@ -422,13 +429,7 @@ const TableContainer = ({data}) => {
   return (
     <StyledWrapper>
       <StyledNote>
-        Data is from the last 30 days.
-        <br/>
-        <b> All columns are lower bounds: the real figure is HIGHER than what is recorded here.</b> (~+10%)
-        <br/>
-        Information is refreshed every 15 minutes.
-        <br/>
-        Earnings listed are only from subs/bits.
+        Information about earnings (subscriptions/bits) from Twitch and (a few large) donations that channels have accrued over the last 30 days. All columns recording monetary value are in US dollars. In the case of multiple channels having the same donations account (e.g. main/alt channels), sum up the values. Information is refreshed every ~15 minutes.
       </StyledNote>
       <input
         onChange={(e) => setSearchQuery(e.target.value)}
