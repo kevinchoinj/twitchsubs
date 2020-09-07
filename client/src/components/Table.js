@@ -27,7 +27,7 @@ const StyledContainer = styled.div`
   a {
     font-weight: 700;
     text-decoration: none;
-    color: #000;
+    color: #dbe2e6;
   }
   .ReactVirtualized__Table__headerRow {
     box-sizing: border-box;
@@ -36,9 +36,6 @@ const StyledContainer = styled.div`
     overflow: visible !important;
   }
   .ReactVirtualized__Table__Grid {
-    border-left: 1px solid rgba(209, 209, 209, 1);
-    border-right: 1px solid rgba(209, 209, 209, 1);
-    border-bottom: 1px solid rgba(209, 209, 209, 1);
     box-sizing: border-box;
     &:focus {
       outline: none;
@@ -102,14 +99,7 @@ const StyledHeader = styled.div`
 `;
 
 export const StyledRow = styled(defaultTableRowRenderer)`
-  background-color: ${props => props.index % 2 === 1 ? '#fafafa' :'#dedede'};
-  &:hover {
-    background-color: #666;
-    color: #fff;
-    a {
-      color: #fff;
-    }
-  }
+  background-color: ${props => props.index % 2 === 1 ? '#131c27' :'transparent'};
 `;
 
 const StyledLoading = styled.div`

@@ -28,8 +28,8 @@ const StyledLinkWrapper = styled.div`
   z-index: 2;
   line-height: 1.4;
   padding: .5rem 1rem;
-  background-color: #fff;
-  color: #000;
+  background-color: #0a0f16;
+  color: #dbe2e6;
   min-width: 200px;
   box-shadow: 0px 5px 6px 0px rgba(0,0,0,0.2);
 `;
