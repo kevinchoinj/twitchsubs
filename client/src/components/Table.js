@@ -99,7 +99,7 @@ const StyledHeader = styled.div`
 `;
 
 export const StyledRow = styled(defaultTableRowRenderer)`
-  background-color: ${props => props.index % 2 === 1 ? '#131c27' :'transparent'};
+  background-color: ${props => props.index % 2 === 1 ? '#1a2739' :'transparent'};
 `;
 
 const StyledLoading = styled.div`
