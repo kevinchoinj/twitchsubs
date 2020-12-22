@@ -100,6 +100,17 @@ const StyledHeader = styled.div`
 
 export const StyledRow = styled(defaultTableRowRenderer)`
   background-color: ${props => props.index % 2 === 1 ? '#1a2739' :'transparent'};
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    > div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      > div {
+        padding: 0 1rem;
+      }
+    }
+  }
 `;
 
 const StyledLoading = styled.div`
@@ -110,41 +121,94 @@ const StyledLoading = styled.div`
   align-items: center;
   justify-content: center;
 `;
-
-export const rowRenderer = (props) => {
-  return (
-    <StyledRow {...props} index={props.index}/>
-  );
-};
+export const rowRenderer = (props) => <StyledRow {...props} index={props.index}/>
 
 const StyledNote = styled.div`
   font-size: 14px;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
-
+const StyledCell = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
+const  StyledMobileLabel = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
+`;
+const StyledIndexRenderer = styled.div`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+const StyledHeaderItem = styled.div`
+  @media screen and (max-width: 768px) {
+    display: none !important;
+  }
+`;
+const StyledLink = styled.a`
+  @media screen and (max-width: 768px) {
+    padding-left: 1rem;
+  }
+`;
+const StyledMobileSorter= styled.div`
+  display: none;
+  font-size: 13px;
+  svg {
+    height: 10px;
+    fill: #fff;
+  }
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
+`;
+const StyledMobileSpace = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    height: 1rem;
+    display: flex;
+  }
+`;
 const numberRenderer = ({
   cellData,
+  dataKey,
 }) => (
-  <>
+  <StyledCell>
+    <StyledMobileLabel>
+    {dataKey}
+    </StyledMobileLabel>
     {cellData.toLocaleString()}
-  </>
+  </StyledCell>
 );
 const moneyRenderer = ({
   cellData,
+  dataKey
 }) => (
-  <>
+  <StyledCell>
+    <StyledMobileLabel>
+    {dataKey}
+    </StyledMobileLabel>
     ${cellData.toLocaleString()}
-  </>
+  </StyledCell>
+
 );
 const linkRenderer = ({
   cellData,
 }) => (
-  <a
+  <StyledLink
     href={`https://twitch.tv/${cellData}`}
     target="_blank"
     rel="noreferrer"
     >
     {cellData}
-  </a>
+  </StyledLink>
 );
 
 const TableContainer = ({data}) => {
@@ -195,7 +259,7 @@ const TableContainer = ({data}) => {
     dataKey,
     label,
   }) => (
-    <div onClick={() => {
+    <StyledHeaderItem onClick={() => {
       if (sorter === dataKey) {
         setReversed(prev => !prev);
       }
@@ -209,14 +273,14 @@ const TableContainer = ({data}) => {
       :
       dataKey === sorter && reversed ?
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg> : null}
-    </div>
+    </StyledHeaderItem>
   );
 
   const indexRenderer = ({rowIndex}) => {
     return (
-      <div>
+      <StyledIndexRenderer>
         {rowIndex}
-      </div>
+      </StyledIndexRenderer>
     )
   }
 
@@ -404,6 +468,7 @@ const TableContainer = ({data}) => {
       label: 'Messages',
       dataKey: 'msgs',
       width: 2000,
+      cellRenderer: numberRenderer,
     },
     {
       display: columnsVisible.percentage_gifted,
@@ -426,6 +491,78 @@ const TableContainer = ({data}) => {
         placeholder="search"
       />
       <StyledTableWrapper>
+      <StyledMobileSorter>
+        <strong>Sort By</strong>
+      </StyledMobileSorter>
+      <StyledMobileSorter>
+        <div onClick={() => {
+          if (sorter === 'channel') {
+            setReversed(prev => !prev);
+          }
+          else {
+            setSorter('channel');
+          }
+        }}>
+          Name
+          {'channel' === sorter && !reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 21l-12-18h24z"/></svg>
+          :
+          'channel' === sorter && reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg> : null}
+        </div>
+      </StyledMobileSorter>
+      <StyledMobileSorter>
+        <div onClick={() => {
+          if (sorter === 'estimated_earnings') {
+            setReversed(prev => !prev);
+          }
+          else {
+            setSorter('estimated_earnings');
+          }
+        }}>
+          Estimated Earnings
+          {'estimated_earnings' === sorter && !reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 21l-12-18h24z"/></svg>
+          :
+          'estimated_earnings' === sorter && reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg> : null}
+        </div>
+      </StyledMobileSorter>
+      <StyledMobileSorter>
+        <div onClick={() => {
+          if (sorter === 'estimated_subs') {
+            setReversed(prev => !prev);
+          }
+          else {
+            setSorter('estimated_subs');
+          }
+        }}>
+          Est. Subs
+          {'estimated_subs' === sorter && !reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 21l-12-18h24z"/></svg>
+          :
+          'estimated_subs' === sorter && reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg> : null}
+        </div>
+      </StyledMobileSorter>
+      <StyledMobileSorter>
+        <div onClick={() => {
+          if (sorter === 'percentage_gifted') {
+            setReversed(prev => !prev);
+          }
+          else {
+            setSorter('percentage_gifted');
+          }
+        }}>
+          % Gifted
+          {'percentage_gifted' === sorter && !reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 21l-12-18h24z"/></svg>
+          :
+          'percentage_gifted' === sorter && reversed ?
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 22h-24l12-20z"/></svg> : null}
+        </div>
+      </StyledMobileSorter>
+      <StyledMobileSpace/>
       <AutoSizer>
         {({height, width}) => (
           <StyledContainer>
@@ -434,10 +571,11 @@ const TableContainer = ({data}) => {
               width={width}
               height={height}
               headerHeight={40}
-              rowHeight={40}
+              rowHeight={window.innerWidth < 768 ? columns.filter(value => value.display).length * 40 : 40}
               rowCount={reversedData.length}
               rowRenderer={rowRenderer}
               rowGetter={({index}) => reversedData[index]}
+              columnProp={columns}
             >
               <Column
                 key='menu'
