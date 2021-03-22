@@ -2,7 +2,7 @@ import React, {useState, useMemo} from 'react';
 import 'react-virtualized/styles.css';
 import styled from 'styled-components';
 import {Column, Table, AutoSizer, defaultTableRowRenderer} from 'react-virtualized';
-import {assoc, filter, compose, sortBy, toLower, prop, reverse, map} from 'ramda';
+import {assoc, filter, compose, sortBy, toLower, prop, reverse} from 'ramda';
 import HeaderFilter from 'components/HeaderFilter';
 import {connect} from 'react-redux';
 
@@ -347,7 +347,7 @@ const TableContainer = ({data}) => {
       display: columnsVisible.estimated_earnings,
       key: 'estimated_earnings',
       headerRender: headerRenderer,
-      label: 'Earnings',
+      label: 'Earnings (30 days)',
       dataKey: 'estimated_earnings',
       width: 2000,
       cellRenderer: moneyRenderer,
