@@ -1,0 +1,97 @@
+/* -- modified react-virtualized styling -- */
+
+.ReactVirtualized__Table a {
+  font-weight: 700;
+  text-decoration: none;
+  color: #dbe2e6;
+}
+.ReactVirtualized__Table__headerRow {
+  font-weight: 700;
+  text-transform: uppercase;
+  display: flex;
+
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 400;
+  overflow: visible !important;
+}
+.ReactVirtualized__Table__row {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  -webkit-box-align: center;
+          align-items: center;
+
+  overflow: visible;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.ReactVirtualized__Table__headerTruncatedText {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ReactVirtualized__Table__headerColumn,
+.ReactVirtualized__Table__rowColumn {
+  margin-right: 0;
+  min-width: 0px;
+  padding: 0 .5rem;
+}
+.ReactVirtualized__Table__rowColumn {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ReactVirtualized__Table__rowColumn:nth-child(1) {
+  overflow: visible;
+}
+.ReactVirtualized__Table__rowColumn.show_overflow {
+  overflow: visible;
+}
+.ReactVirtualized__Table__headerColumn:first-of-type,
+.ReactVirtualized__Table__rowColumn:first-of-type {
+  margin-left: 10px;
+}
+.ReactVirtualized__Table__sortableHeaderColumn {
+  cursor: pointer;
+}
+
+.ReactVirtualized__Table__sortableHeaderIconContainer {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+}
+.ReactVirtualized__Table__sortableHeaderIcon {
+  -webkit-box-flex: 0;
+          flex: 0 0 24px;
+  height: 1em;
+  width: 1em;
+  fill: currentColor;
+}
+
+@media screen and (max-width: 768px) {
+  .ReactVirtualized__Table__row {
+    flex-direction: column;
+  }
+  .ReactVirtualized__Table__row > div {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .ReactVirtualized__Table__row > div > div {
+    padding: 0 1rem;
+  }
+  .ReactVirtualized__Table .ReactVirtualized__Table__headerColumn:not(:first-child) {
+    display: none;
+  }
+  .ReactVirtualized__Table__rowColumn:first-child {
+    display: none;
+  }
+}

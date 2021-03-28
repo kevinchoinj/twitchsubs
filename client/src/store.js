@@ -8,7 +8,7 @@ import reducers from './reducers';
 
 export const history = createBrowserHistory();
 
-export default(initialState)=>{
+const store = (initialState) => {
   return createStore(
     combineReducers({
       ...reducers,
@@ -31,3 +31,4 @@ export default(initialState)=>{
   );
 };
 
+export default store;

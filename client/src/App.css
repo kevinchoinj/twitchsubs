@@ -8,3 +8,6 @@ body {
   background-color: #121b28;
   color: #dbe2e6;
 }
+* {
+  box-sizing: border-box;
+}

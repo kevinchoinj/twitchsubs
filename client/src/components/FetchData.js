@@ -3,7 +3,7 @@ import {fetchData} from 'actions/data';
 import {connect} from 'react-redux';
 
 const FetchData = ({fetchDataAction}) => {
-  useEffect(() => { fetchDataAction() }, [])
+  useEffect(() => { fetchDataAction() }, [fetchDataAction])
   return null;
 }
 

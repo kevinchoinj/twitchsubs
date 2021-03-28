@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import styled from 'styled-components';
+import {visibleColumnsArray} from 'data/variables';
 
 const StyledWrapper = styled.div`
   flex: 1;
@@ -65,7 +66,6 @@ const StyledButtonContainer = styled.div`
 const HeaderFilter = ({
   columnsVisible,
   toggleColumn,
-  visibleColumnsArray,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
@@ -107,18 +107,18 @@ const HeaderFilter = ({
           </StyledButtonContainer>
           {showMenu &&
             <StyledLinkWrapper id="header-filter-overlay">
-                {visibleColumnsArray?.map(value => (
-                  <StyledContainer key={value.key}>
+                {visibleColumnsArray.map(value => (
+                  <StyledContainer key={value.dataKey}>
                     <div
-                      onClick={(val) => toggleColumn(value.key, val)}
+                      onClick={(val) => toggleColumn(value.dataKey, val)}
                     >
                       {value.label}
                     </div>
                     <input type="checkbox"
-                      name={value.key}
-                      value={value.key}
-                      checked={columnsVisible[value.key]}
-                      onChange={(e) => toggleColumn(value.key, e.target.checked)}
+                      name={value.dataKey}
+                      value={value.dataKey}
+                      checked={columnsVisible[value.dataKey]}
+                      onChange={(e) => toggleColumn(value.dataKey, e.target.checked)}
                     />
                   </StyledContainer>
                 ))}

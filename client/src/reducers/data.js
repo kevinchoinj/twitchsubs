@@ -6,7 +6,7 @@ const DEFAULT_STATE={
   data: 0,
 };
 
-export default(state=DEFAULT_STATE, payload)=>
+const dataReducer =(state=DEFAULT_STATE, payload) =>
 {
   switch(payload.type){
   case FETCH_DATA_SUCCEEDED:
@@ -27,3 +27,5 @@ export default(state=DEFAULT_STATE, payload)=>
     return state;
   }
 };
+
+export default dataReducer;
