@@ -4,7 +4,7 @@ import {
   numberRenderer,
 } from 'components/Cells';
 
-export const LOADING_MESSAGE = "Loading Data for 2000+ streamers...";
+export const LOADING_MESSAGE = "Loading Data for 4000+ streamers...";
 export const HEADER_MESSAGE = "Information about earnings (subscriptions/bits) from Twitch and (a few large) donations that channels have accrued over the last 30 days. All columns recording monetary value are in US dollars. In the case of multiple channels having the same donations account (e.g. main/alt channels), sum up the values. Information is refreshed every ~15 minutes.";
 
 export const initialColumnsVisible = {

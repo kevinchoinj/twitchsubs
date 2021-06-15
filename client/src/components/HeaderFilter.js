@@ -25,12 +25,11 @@ const StyledLinkWrapper = styled.div`
   left: calc(50% - 4px);
   box-sizing: border-box;
   position: absolute;
-  border: 1px solid rgba(69, 69, 69, 1);
   z-index: 2;
   line-height: 1.4;
   padding: .5rem 1rem;
-  background-color: #1a2739;
-  color: #dbe2e6;
+  background-color: #1f2937;
+  color: #efefef;
   min-width: 200px;
   box-shadow: 0px 5px 6px 0px rgba(0,0,0,0.2);
 `;

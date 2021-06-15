@@ -14,7 +14,7 @@ const StyledHeader = styled.div`
   align-items: center;
   width: 800px;
   color: #fff;
-  background-color: #1f3041;
+  background-color: #374151;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   height: 40px;
