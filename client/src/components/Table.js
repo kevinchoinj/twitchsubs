@@ -17,6 +17,8 @@ import {
 } from 'data/variables';
 import MobileSorter from 'components/MobileSorter';
 import {selectTableData} from 'reducers';
+import {fetchDataSingularHistory} from "actions/data";
+import {hoverImage} from "actions/mouse";
 
 const StyledWrapper = styled.div`
   height: 100vh;
@@ -36,6 +38,12 @@ const StyledWrapper = styled.div`
     font-size: 16px;
   }
   font-family: 'Open Sans', helvetica, sans-serif;
+  .ReactVirtualized__Table__row {
+    cursor: pointer;
+    &:hover {
+      background-color: #56667f;
+    }
+  }
 `;
 const StyledTableWrapper = styled.div`
   flex: 1;
@@ -60,7 +68,10 @@ const StyledNote = styled.div`
 `;
 
 const HeaderCell = ({
+  dataHistory,
   dataKey,
+  fetchDataHistory,
+  getMousePosition,
   label,
   reversed,
   sorter,
@@ -84,7 +95,7 @@ const HeaderCell = ({
   </div>
 }
 
-const TableContainer = ({data}) => {
+const TableContainer = ({data, dataHistory, fetchDataHistory, setMouseUsername}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sorter, setSorter] = useState('estimated_earnings');
   const [reversed, setReversed] = useState(false);
@@ -156,6 +167,14 @@ const TableContainer = ({data}) => {
               noRowsRenderer={() => data ? <StyledLoading style={{color: "red", fill: "red", fontWeight: "700"}}><svg type="color-text-accessible-red" width="20px" height="20px" version="1.1" viewBox="0 0 20 20" x="0px" y="0px" class="ScSvg-sc-1j5mt50-1 kJGhvW"><g><path fill-rule="evenodd" d="M5 7a5 5 0 116.192 4.857A2 2 0 0013 13h1a3 3 0 013 3v2h-2v-2a1 1 0 00-1-1h-1a3.99 3.99 0 01-3-1.354A3.99 3.99 0 017 15H6a1 1 0 00-1 1v2H3v-2a3 3 0 013-3h1a2 2 0 001.808-1.143A5.002 5.002 0 015 7zm5 3a3 3 0 110-6 3 3 0 010 6z" clip-rule="evenodd"></path></g></svg> 0</StyledLoading> : null}
               rowGetter={({index}) => reversedData[index]}
               columnProp={visibleColumnsArray}
+              onRowClick={({rowData}) => {
+                if (!dataHistory[rowData.channel]) {
+                  fetchDataHistory(rowData.channel);
+                }
+                setMouseUsername(rowData.channel);
+                return null;
+              }}
+              // onRowMouseOut={() => setMouseUsername(null)}
             >
               <Column
                 key='menu'
@@ -200,7 +219,14 @@ const TableContainer = ({data}) => {
 const mapStateToProps = (state) => {
   return {
     data: selectTableData(state),
+    dataHistory: state.data.dataHistory,
   };
 };
 
-export default connect(mapStateToProps, null)(TableContainer);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDataHistory: (username) => dispatch(fetchDataSingularHistory(username)),
+    setMouseUsername: (username) => dispatch(hoverImage(username)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(TableContainer);
