@@ -15,10 +15,10 @@ const StyledInput = styled.div`
   margin-right: 1rem;
 `;
 const possibleColors = [
+  '#f6c85f',
   '#F22613',
   '#C8F7C5',
-  '#FFECDB',
-  '#fff',
+  'green',
   '#E0FFFF',
   '#FFFACD',
   '#FF8C00',
@@ -79,11 +79,11 @@ const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip labelStyle={{ color: "#000" }}  wrapperStyle={{backgroundColor: "#9098a1"}}/>
+          <Tooltip labelStyle={{ color: "#000" }}  itemStyle={{color: "#000"}}/>
           <Legend layout="horizontal"/>
           {(graphKeys).map((value, index) => {
             return (
-              <Line type="monotone" key={value} dataKey={value} stroke={possibleColors[index]} />
+              <Line type="monotone" key={value} dataKey={value} stroke={possibleColors[index]} dot={false}/>
             )
           })}
         </LineChart>

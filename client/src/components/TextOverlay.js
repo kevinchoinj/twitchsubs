@@ -1,8 +1,5 @@
 import React, {
   useMemo,
-  useRef,
-  useLayoutEffect,
-  useEffect,
 } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
@@ -14,43 +11,14 @@ import Chart from "components/Chart";
 
 const isEmptyOrNil = isEmpty || isNil;
 
-//https://github.com/facebook/react/issues/14195
-//useMutationEffect removed: https://github.com/facebook/react/pull/14336
-const useAnimationFrame = callback => {
-  const callbackRef = useRef(callback);
-  useLayoutEffect(
-    () => {
-      callbackRef.current = callback;
-    },
-    [callback]
-  );
-
-  const loop = () => {
-    frameRef.current = requestAnimationFrame(
-      loop
-    );
-    const cb = callbackRef.current;
-    cb();
-  };
-
-  const frameRef = useRef();
-  useLayoutEffect(() => {
-    frameRef.current = requestAnimationFrame(
-      loop
-    );
-    return () =>
-      cancelAnimationFrame(frameRef.current);
-  });
-};
-
 const StyledWrapper = styled.div`
   top: 1rem;
   right: 1rem;
   height: calc(100% - 2rem);
   position: fixed;
   background-color: #1f2937;
-  color: #fff;
-  padding: .8rem;
+  color: #dedede;
+  padding: 0 .8rem 2rem .8rem;
   border-radius: 3px;
   border: 2px solid #374151;
   box-sizing: border-box;
@@ -58,7 +26,9 @@ const StyledWrapper = styled.div`
   font-size: .8rem;
   white-space: nowrap;
   width: 700px;
-  overflow-y: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
   @media screen and (max-width: 768px) {
     max-width: calc(100% - 2rem);
   }
@@ -69,7 +39,10 @@ const StyledWrapper = styled.div`
     }
   }
 `;
-
+const StyledContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+`;
 const StyledRow = styled.div`
   display: flex;
   &:nth-child(odd) {
@@ -101,8 +74,7 @@ const StyledTableHeader = styled.div`
   }
 `;
 const StyledClose = styled.div`
-  position: absolute;
-  right: 1rem;
+  left: 1rem;
   top: 1rem;
   cursor: pointer;
   svg {
@@ -111,17 +83,24 @@ const StyledClose = styled.div`
     height: 1rem;
   }
 `;
+const StyledCloseWrapper = styled.div`
+  width: 100%;
+  padding: 1rem 0.5rem;
+  border-bottom: 2px solid #374151;
+`;
 
-const TextOverlay = ({ content, dataHistory, hoverImage, location }) => {
-  useEffect(() => {
-    hoverImage(false);
-  }, [hoverImage, location]);
-
+const TextOverlay = ({ content, dataHistory, hoverImage }) => {
   const tableData = useMemo(() => (dataHistory[content]) ? sortBy(prop('start_of_30_day_interval'))(dataHistory[content]) : null, [dataHistory, content])
   return (
     <>
       {content &&
         <StyledWrapper>
+          <StyledCloseWrapper>
+            <StyledClose onClick={() => hoverImage(null)}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" /></svg>
+            </StyledClose>
+          </StyledCloseWrapper>
+          <StyledContainer>
           {!isEmptyOrNil(tableData) ?
             <>
               <h2>
@@ -186,9 +165,7 @@ const TextOverlay = ({ content, dataHistory, hoverImage, location }) => {
               </circle>
             </svg>
           }
-          <StyledClose onClick={() => hoverImage(null)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" /></svg>
-          </StyledClose>
+          </StyledContainer>
         </StyledWrapper>
       }
     </>
@@ -206,4 +183,4 @@ const mapDispatchToProps = (dispatch) => {
     hoverImage: (value) => dispatch(hoverImage(value)),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TextOverlay));
+export default connect(mapStateToProps, mapDispatchToProps)(TextOverlay);

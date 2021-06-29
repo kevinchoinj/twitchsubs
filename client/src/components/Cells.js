@@ -55,6 +55,7 @@ const StyledIndexRenderer = styled.div`
   }
 `;
 const StyledLink = styled.a`
+  font-weight: 600;
   @media screen and (max-width: 768px) {
     padding-left: 1rem;
   }
@@ -92,6 +93,7 @@ export const linkRenderer = ({
     href={`https://twitch.tv/${cellData}`}
     target="_blank"
     rel="noreferrer"
+    as="div"
     >
     {cellData}
   </StyledLink>

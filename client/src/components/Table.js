@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import 'data/table.css';
 import styled from 'styled-components';
 import {Column, Table, AutoSizer, defaultTableRowRenderer} from 'react-virtualized';
@@ -137,6 +137,13 @@ const TableContainer = ({data, dataHistory, fetchDataHistory, setMouseUsername})
 
   const memoizedSetReversed = useCallback(setReversed, [setReversed]);
   const memoizedSetSorter = useCallback(setSorter, [setSorter]);
+
+  /*
+  useEffect(() => {
+    fetchDataHistory("xqcow");
+    setMouseUsername("xqcow");
+  }, [fetchDataHistory, setMouseUsername]);
+  */
 
   return (
     <StyledWrapper>
