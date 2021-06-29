@@ -1,12 +1,14 @@
 import {
   HOVER_IMAGE,
   GET_MOUSE_POSITION,
+  SET_GRAPH_KEYS,
 } from 'actions/mouse';
 import produce from "immer";
 
 const DEFAULT_STATE={
   content: false,
-  mousePosition: {xValue: 0, yValue: 0}
+  mousePosition: {xValue: 0, yValue: 0},
+  graphKeys: [],
 };
 
 const mouseReducer = (state = DEFAULT_STATE, action) =>
@@ -20,6 +22,12 @@ const mouseReducer = (state = DEFAULT_STATE, action) =>
         break;
       case HOVER_IMAGE:
         draft.content = action.image;
+        if (action.image) {
+          draft.graphKeys.push(action.image);
+        }
+        break;
+      case SET_GRAPH_KEYS:
+        draft.graphKeys = action.graphKeys;
         break;
       default:
         break;

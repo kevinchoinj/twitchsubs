@@ -24,9 +24,9 @@ function handleErrors(response) {
 
 function getData() {
   return () => {
-    //return fetch('https://twitch.notahoneypot.me/api/earnings_v2?current=eq.true');
+    return fetch('https://twitch.notahoneypot.me/api/earnings_v2?current=eq.true');
 
-    return fetch('https://twitch.notahoneypot.me/api/earnings');
+    // return fetch('https://twitch.notahoneypot.me/api/earnings');
   };
 }
 export function fetchData() {

@@ -1,5 +1,4 @@
 import React, {
-  useState,
   useMemo,
   useRef,
   useLayoutEffect,
@@ -11,6 +10,7 @@ import { withRouter } from 'react-router-dom';
 import { hoverImage } from 'actions/mouse';
 import { isEmpty, isNil, prop, sortBy } from "ramda";
 import { format } from "date-fns";
+import Chart from "components/Chart";
 
 const isEmptyOrNil = isEmpty || isNil;
 
@@ -61,6 +61,12 @@ const StyledWrapper = styled.div`
   overflow-y: auto;
   @media screen and (max-width: 768px) {
     max-width: calc(100% - 2rem);
+  }
+  .recharts-tooltip-wrapper {
+    background-color: #000;
+    .customTooltip {
+    background-color: #000;
+    }
   }
 `;
 
@@ -121,6 +127,7 @@ const TextOverlay = ({ content, dataHistory, hoverImage, location }) => {
               <h2>
                 {tableData?.[0]?.channel}
               </h2>
+              <Chart />
               <StyledTableHeader>
                 <div>
                   StartDate (30d)
