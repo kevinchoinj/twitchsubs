@@ -1,5 +1,5 @@
 import { assocPath, includes } from 'ramda';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { connect } from "react-redux";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format } from "date-fns";
@@ -27,15 +27,16 @@ const possibleColors = [
   'purple',
 ]
 const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
+  const [graphKey, setGraphKey] = useState("estimated_earnings");
   const mappedData = useMemo(() => {
     let mapped = {};
     for (let user of Object.values(dataHistory)) {
       for (let val of user) {
-        mapped = assocPath([format(new Date(val.start_of_30_day_interval), "PP"), val.channel], val.estimated_earnings, mapped);
+        mapped = assocPath([format(new Date(val.start_of_30_day_interval), "PP"), val.channel], val[graphKey], mapped);
       }
     }
     return mapped;
-  }, [dataHistory]);
+  }, [dataHistory, graphKey]);
   const dataArray = useMemo(() => {
     const arr = Object.entries(mappedData).map((entry) => {
       const date = new Date(entry[0]);
@@ -46,6 +47,17 @@ const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
 
   return (
     <>
+    <StyledRow>
+      <button onClick={() => setGraphKey("estimated_earnings")}>
+        Earnings (30d)
+      </button>
+      <button onClick={() => setGraphKey("estimated_subs")}>
+        Est. Subs
+      </button>
+      <button onClick={() => setGraphKey("percentage_gifted")}>
+        % Gifted
+      </button>
+    </StyledRow>
     <StyledRow>
         {Object.keys(dataHistory).map((value) => {
           return (

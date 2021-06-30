@@ -30,7 +30,16 @@ const dataReducer =(state=DEFAULT_STATE, payload) =>
   case FETCH_DATA_HISTORY_SUCCEEDED:
     return state = {
       ...state,
-      dataHistory: assoc(payload.username, payload.data, state.dataHistory),
+      dataHistory: assoc(payload.username, payload?.data?.map((data) => {
+        if (data.recorded_subs) {
+          data.percentage_gifted = ((data.gifted_tier1_subs + data.gifted_tier2_subs + data.gifted_tier3_subs)/data.estimated_subs)*100;
+        }
+        else {
+          data.percentage_gifted = 0;
+        }
+        data.bits = data.bits + data.bits_from_extensions;
+        return data;
+      }), state.dataHistory),
     };
   default:
     return state;
