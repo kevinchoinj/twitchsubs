@@ -2,7 +2,8 @@ import React from 'react';
 import FetchData from 'components/FetchData';
 import Table from 'components/Table';
 import 'App.css';
-import TextOverlay from 'components/TextOverlay';
+import Drawer from 'components/Drawer';
+import DrawerMobile from 'components/DrawerMobile';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         <FetchData />
         <Table />
       </div>
-      <TextOverlay />
+      <Drawer />
+      <DrawerMobile />
     </>
   );
 }

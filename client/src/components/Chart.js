@@ -1,10 +1,11 @@
-import { assocPath, includes } from 'ramda';
+import { assocPath, includes, prop, uniq } from 'ramda';
 import React, { useMemo, useState } from 'react';
 import { connect } from "react-redux";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format } from "date-fns";
 import { setGraphKeys } from "actions/mouse";
 import styled from "styled-components";
+import {resetDataHistory} from "actions/data";
 
 const StyledRow =styled.div`
   display: flex;
@@ -25,8 +26,32 @@ const possibleColors = [
   '#00AA00',
   'pink',
   'purple',
-]
-const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
+];
+
+const StyledOption = styled.div`
+  border-radius: 5px;
+  border: 2px solid #dedede;
+  font-size: 12px;
+  margin-right: 1rem;
+  cursor: pointer;
+  background-color: ${props => props["data-active"] && "#374151"};
+  padding: 5px 10px;
+  margin-bottom: 1rem;
+`;
+const StyledReset = styled.div`
+  border: 2px solid red;
+  border-radius: 5px;
+  margin-right: 1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-bottom: 1rem;
+  font-size: 12px;
+  color: red;
+  align-self: flex-start;
+  justify-self: flex-start;
+`;
+
+const Example = ({ dataHistory, graphKeys, reset, setVisibleKeys }) => {
   const [graphKey, setGraphKey] = useState("estimated_earnings");
   const mappedData = useMemo(() => {
     let mapped = {};
@@ -48,15 +73,15 @@ const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
   return (
     <>
     <StyledRow>
-      <button onClick={() => setGraphKey("estimated_earnings")}>
+      <StyledOption data-active={graphKey==="estimated_earnings"} onClick={() => setGraphKey("estimated_earnings")}>
         Earnings (30d)
-      </button>
-      <button onClick={() => setGraphKey("estimated_subs")}>
+      </StyledOption>
+      <StyledOption data-active={graphKey==="estimated_subs"} onClick={() => setGraphKey("estimated_subs")}>
         Est. Subs
-      </button>
-      <button onClick={() => setGraphKey("percentage_gifted")}>
+      </StyledOption>
+      <StyledOption data-active={graphKey==="percentage_gifted"} onClick={() => setGraphKey("percentage_gifted")}>
         % Gifted
-      </button>
+      </StyledOption>
     </StyledRow>
     <StyledRow>
         {Object.keys(dataHistory).map((value) => {
@@ -93,13 +118,16 @@ const Example = ({ dataHistory, graphKeys, setVisibleKeys }) => {
           <YAxis />
           <Tooltip labelStyle={{ color: "#000" }}  itemStyle={{color: "#000"}}/>
           <Legend layout="horizontal"/>
-          {(graphKeys).map((value, index) => {
+          {uniq(graphKeys).map((value, index) => {
             return (
               <Line type="monotone" key={value} dataKey={value} stroke={possibleColors[index]} dot={false}/>
             )
           })}
         </LineChart>
       </ResponsiveContainer>
+      <StyledReset onClick={() => reset()}>
+        RESET ALL CHART DATA
+      </StyledReset>
     </>
   );
 }
@@ -113,6 +141,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setVisibleKeys: (graphKeys) => dispatch(setGraphKeys(graphKeys)),
+    reset: () => dispatch(resetDataHistory()),
   };
 };
 

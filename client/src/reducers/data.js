@@ -1,6 +1,7 @@
 import {
   FETCH_DATA_SUCCEEDED,
   FETCH_DATA_HISTORY_SUCCEEDED,
+  RESET_DATA_HISTORY,
 } from 'actions/data';
 import {assoc} from "ramda";
 
@@ -40,6 +41,11 @@ const dataReducer =(state=DEFAULT_STATE, payload) =>
         data.bits = data.bits + data.bits_from_extensions;
         return data;
       }), state.dataHistory),
+    };
+  case RESET_DATA_HISTORY:
+    return state = {
+      ...state,
+      dataHistory: {},
     };
   default:
     return state;

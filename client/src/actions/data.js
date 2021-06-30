@@ -10,10 +10,11 @@ const fetchDataStarted = request => ({type: FETCH_DATA_STARTED, request});
 const fetchDataSucceeded = (data) => ({type: FETCH_DATA_SUCCEEDED, data});
 const fetchDataFailure = (data, error) => ({type: FETCH_DATA_FAILURE, data, error});
 
-
 const fetchDataHistoryStarted = request => ({type: FETCH_DATA_HISTORY_STARTED, request});
 const fetchDataHistorySucceeded = (username, data) => ({type: FETCH_DATA_HISTORY_SUCCEEDED, username, data});
 const fetchDataHistoryFailure = (data, error) => ({type: FETCH_DATA_HISTORY_FAILURE, data, error});
+
+export const RESET_DATA_HISTORY = Symbol('RESET_DATA_HISTORY');
 
 function handleErrors(response) {
   if (!response.ok) {
@@ -59,3 +60,9 @@ export function fetchDataSingularHistory(username) {
       .catch(error => dispatch(fetchDataHistoryFailure(error)));
   };
 }
+
+export const resetDataHistory = () => {
+  return {
+    type: RESET_DATA_HISTORY,
+  };
+};

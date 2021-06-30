@@ -3,17 +3,20 @@ import {
   GET_MOUSE_POSITION,
   SET_GRAPH_KEYS,
 } from 'actions/mouse';
+import {
+  RESET_DATA_HISTORY,
+} from "actions/data";
 import produce from "immer";
 
-const DEFAULT_STATE={
+const DEFAULT_STATE = {
   content: false,
-  mousePosition: {xValue: 0, yValue: 0},
+  mousePosition: { xValue: 0, yValue: 0 },
   graphKeys: [],
 };
 
 const mouseReducer = (state = DEFAULT_STATE, action) =>
   produce(state, draft => {
-    switch(action.type){
+    switch (action.type) {
       case GET_MOUSE_POSITION:
         draft.mousePosition = {
           xValue: action.xValue,
@@ -29,10 +32,14 @@ const mouseReducer = (state = DEFAULT_STATE, action) =>
       case SET_GRAPH_KEYS:
         draft.graphKeys = action.graphKeys;
         break;
+      case RESET_DATA_HISTORY:
+        draft.graphKeys = [];
+        draft.content = false;
+        break;
       default:
         break;
     }
   }
-);
+  );
 
 export default mouseReducer;

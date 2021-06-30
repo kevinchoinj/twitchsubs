@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import 'data/table.css';
 import styled from 'styled-components';
 import {Column, Table, AutoSizer, defaultTableRowRenderer} from 'react-virtualized';
@@ -10,7 +10,6 @@ import {
   indexRenderer,
 } from 'components/Cells';
 import {
-  HEADER_MESSAGE,
   initialColumnsVisible,
   LOADING_MESSAGE,
   visibleColumnsArray,
@@ -147,9 +146,6 @@ const TableContainer = ({data, dataHistory, fetchDataHistory, setMouseUsername})
 
   return (
     <StyledWrapper>
-      <StyledNote>
-        {HEADER_MESSAGE}
-      </StyledNote>
       <input
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="search"
