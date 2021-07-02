@@ -60,12 +60,31 @@ const StyledLink = styled.a`
     padding-left: 1rem;
   }
 `;
-const  StyledMobileLabel = styled.div`
+const StyledMobileLabel = styled.div`
   display: none;
   @media screen and (max-width: 768px) {
     display: flex;
   }
 `;
+
+const HUMAN_READABLE_MAP = {
+  estimated_earnings: 'Earnings (30 days)',
+  recorded_subs: 'Rec. Subs',
+  estimated_subs: 'Est. Subs',
+  bits: 'Bits',
+  bits_from_extensions: 'Bits from Ext.',
+  recorded_prime_subs: 'Prime Subs',
+  gifted_by_broadcaster_tier1_subs: 'By Streamer',
+  gifted_tier1_subs: 'Gifted T1',
+  gifted_tier2_subs: 'Gifted T2',
+  gifted_tier3_subs: 'Gifted T3',
+  recorded_tier1_subs: 'T1 Subs',
+  recorded_tier2_subs: 'T2 Subs',
+  recorded_tier3_subs: 'T3 Subs',
+  msgs: 'Messages',
+  percentage_gifted: '% Gifted',
+}
+
 export const headerRowRenderer = ({
   className,
   columns,
@@ -79,7 +98,7 @@ export const headerRowRenderer = ({
     {columns}
   </StyledHeader>
 );
-export const indexRenderer = ({rowIndex}) => {
+export const indexRenderer = ({ rowIndex }) => {
   return (
     <StyledIndexRenderer>
       {rowIndex}
@@ -94,28 +113,27 @@ export const linkRenderer = ({
     target="_blank"
     rel="noreferrer"
     as="div"
-    >
+  >
     {cellData}
   </StyledLink>
 );
-export const moneyRenderer = ({
-  cellData,
-  dataKey
-}) => (
-  <StyledCell>
-    <StyledMobileLabel>
-    {dataKey}
-    </StyledMobileLabel>
-    ${cellData.toLocaleString()}
-  </StyledCell>
-);
+export const moneyRenderer = ({ dataKey, cellData }) => {
+  return (
+    <StyledCell>
+      <StyledMobileLabel>
+        {HUMAN_READABLE_MAP[dataKey]}
+      </StyledMobileLabel>
+      ${cellData.toLocaleString()}
+    </StyledCell>
+  );
+}
 export const numberRenderer = ({
   cellData,
   dataKey,
 }) => (
   <StyledCell>
     <StyledMobileLabel>
-    {dataKey}
+      {HUMAN_READABLE_MAP[dataKey]}
     </StyledMobileLabel>
     {cellData.toLocaleString()}
   </StyledCell>
