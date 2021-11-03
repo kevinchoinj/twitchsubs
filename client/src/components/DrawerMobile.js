@@ -29,7 +29,7 @@ const StyledContent = styled.div`
 const StyledRow = styled.div`
   display: flex;
   &:nth-child(odd) {
-    background-color: #374151;
+    background-color: ${props => props.theme.colorBackgroundSecondary};
   }
   > div {
     flex: 0 0 25%;
@@ -45,7 +45,8 @@ const StyledRow = styled.div`
 
 const StyledTableHeader = styled.div`
   display: flex;
-  font-weight: 600;
+  font-weight: 700;
+  background-color: ${props => props.theme.colorBackgroundSecondary};
   > div {
     flex: 0 0 25%;
     text-overflow: ellipsis;

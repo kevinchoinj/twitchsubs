@@ -61,7 +61,7 @@ const StyledRow = styled.div`
 `;
 const StyledTableHeader = styled.div`
   display: flex;
-  font-weight: 600;
+  font-weight: 700;
   > div {
     flex: 0 0 25%;
     text-overflow: ellipsis;

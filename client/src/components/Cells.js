@@ -14,7 +14,8 @@ const StyledHeader = styled.div`
   align-items: center;
   width: 800px;
   color: #fff;
-  background-color: #374151;
+  font-weight: 700;
+  background-color: ${props => props.theme.colorBackgroundSecondary};
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   height: 40px;
@@ -41,7 +42,7 @@ const StyledHeader = styled.div`
     margin-right: 0;
     padding: 0 .5rem;
     &:hover {
-      background-color: #304964;
+      background-color: ${props => props.theme.colorHover};
     }
     &:first-of-type {
       padding: 0;
@@ -55,7 +56,7 @@ const StyledIndexRenderer = styled.div`
   }
 `;
 const StyledLink = styled.a`
-  font-weight: 600;
+  font-weight: 700;
   @media screen and (max-width: 768px) {
     padding-left: 1rem;
   }

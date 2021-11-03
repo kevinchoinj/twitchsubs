@@ -30,17 +30,16 @@ const StyledWrapper = styled.div`
   input {
     align-self: flex-start;
     margin: 1rem 0;
-    background-color:#374151;
-    color: #efefef;
+    background-color: ${props => props.theme.colorBackgroundSecondary};
+    color: ${props => props.theme.colorForeground};
     border: none;
     padding: 8px 12px;
     font-size: 16px;
   }
-  font-family: 'Open Sans', helvetica, sans-serif;
   .ReactVirtualized__Table__row {
     cursor: pointer;
     &:hover {
-      background-color: #56667f;
+      background-color: ${props => props.theme.colorHover};
     }
   }
 `;
@@ -48,7 +47,7 @@ const StyledTableWrapper = styled.div`
   flex: 1;
 `;
 export const StyledRow = styled(defaultTableRowRenderer)`
-  background-color: ${props => props.index % 2 === 1 ? '#374151' :'transparent'};
+  background-color: ${props => props.index % 2 === 1 ? props.theme.colorBackgroundSecondary :'transparent'};
 `;
 const StyledLoading = styled.div`
   position: fixed;
@@ -59,12 +58,6 @@ const StyledLoading = styled.div`
   justify-content: center;
 `;
 export const rowRenderer = (props) => <StyledRow {...props} index={props.index}/>
-const StyledNote = styled.div`
-  font-size: 14px;
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
 
 const HeaderCell = ({
   dataHistory,

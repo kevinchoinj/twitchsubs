@@ -1,4 +1,4 @@
-import { assocPath, includes, prop, uniq } from 'ramda';
+import { assocPath, includes, uniq } from 'ramda';
 import React, { useMemo, useState } from 'react';
 import { connect } from "react-redux";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';

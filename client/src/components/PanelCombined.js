@@ -29,7 +29,7 @@ const StyledContainer = styled.div`
   position: fixed;
   pointer-events: auto;
   top: 0;
-  background-color :#141a23;
+  background-color: ${props => props.theme.colorBackground};
   transform: ${props => props.expanded && 'translateX(-100%)'};
   transition: transform .2s linear;
   animation: ${props => props.expanded && css`${animationDrawerOpen}`};
@@ -84,7 +84,7 @@ const StyledHeader = styled.div`
   font-weight: 700;
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
-  background-color: ${props => props.dark ? '#172330' : 'transparent'};
+  background-color: ${props => props.theme.colorBackgroundSecondary};
   svg {
     fill: #dedede;
     cursor: pointer;
@@ -98,18 +98,6 @@ const StyledHeaderTitle = styled.div`
     margin: 0 10px;
   }
 `;
-const StyledMask = styled.div`
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  background-color: rgba(0,0,0,.2);
-  opacity: ${props => !props.expanded ? 0 : 1};
-  pointer-events: ${props => !props.expanded && 'none'};
-  transition: .2s linear;
-  left: 0;
-  top: 0;
-`;
-
 const PanelCombined = ({children, dark, expanded, resizeEffect, setPanel, hideButtons, title}) => {
   const [mouseDown, setMouseDown] = useState(false);
   const [dragAmount, setDragAmount] = useState(null);
@@ -144,7 +132,6 @@ const PanelCombined = ({children, dark, expanded, resizeEffect, setPanel, hideBu
       onMouseUp={() => onMouseUp()}
       onMouseLeave = {() => onMouseUp()}
     >
-      <StyledMask expanded={expanded} onClick={() => setPanel(0)}/>
       <StyledContainer expanded={expanded}
         style={{
           width: dragAmount ? `calc(100% - ${dragAmount}px)` : '783px',
