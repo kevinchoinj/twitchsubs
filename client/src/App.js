@@ -27,7 +27,7 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
       <div className="App">
-        {/*<FetchData />*/}
+        <FetchData />
         <Table />
       </div>
       <Drawer />

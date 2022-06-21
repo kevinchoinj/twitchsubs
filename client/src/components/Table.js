@@ -205,7 +205,7 @@ const TableContainer = ({data, dataHistory, fetchDataHistory, setMouseUsername})
       </StyledTableWrapper>
       {!data &&
         <StyledLoading>
-          This site is no longer active
+          Loading Data :^)
         </StyledLoading>
       }
     </StyledWrapper>
