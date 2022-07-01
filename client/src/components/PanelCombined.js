@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import styled, {keyframes, css} from 'styled-components';
+import React, { useEffect, useRef, useState } from "react";
+import styled, { keyframes, css } from "styled-components";
 
 const animationDrawerOpen = keyframes`
   0% {
@@ -15,11 +15,8 @@ const StyledWrapper = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
-  pointer-events: ${props => props.expanded ? 'auto' : 'none'};
-  user-select: ${props => props.expanded ? 'none' : 'auto'};
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+  pointer-events: ${(props) => (props.expanded ? "auto" : "none")};
+  user-select: ${(props) => (props.expanded ? "none" : "auto")};
 `;
 const StyledContainer = styled.div`
   height: 100vh;
@@ -29,14 +26,24 @@ const StyledContainer = styled.div`
   position: fixed;
   pointer-events: auto;
   top: 0;
-  background-color: ${props => props.theme.colorBackground};
-  transform: ${props => props.expanded && 'translateX(-100%)'};
-  transition: transform .2s linear;
-  animation: ${props => props.expanded && css`${animationDrawerOpen}`};
-  animation-duration: .2s;
+  background-color: ${(props) => props.theme.colorBackground};
+  transform: ${(props) => props.expanded && "translateX(-100%)"};
+  transition: transform 0.2s linear;
+  animation: ${(props) =>
+    props.expanded &&
+    css`
+      ${animationDrawerOpen}
+    `};
+  animation-duration: 0.2s;
   animation-fill-mode: forward;
   animation-timing-function: linear;
   flex: 1 1 0;
+  @media screen and (max-width: 768px) {
+    &[style] {
+      width: 100vw !important;
+      right: -100vw !important;
+    }
+  }
 `;
 const StyledResizer = styled.div`
   width: 5px;
@@ -46,7 +53,7 @@ const StyledResizer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: .3s ease;
+  transition: 0.3s ease;
   div {
     height: 14px;
     width: 1px;
@@ -67,6 +74,9 @@ const StyledResizer = styled.div`
       background-color: #fff;
     }
   }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 const StyledContentContainer = styled.div`
   height: 100%;
@@ -84,7 +94,7 @@ const StyledHeader = styled.div`
   font-weight: 700;
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
-  background-color: ${props => props.theme.colorBackgroundSecondary};
+  background-color: ${(props) => props.theme.colorBackgroundSecondary};
   svg {
     fill: #dedede;
     cursor: pointer;
@@ -98,7 +108,7 @@ const StyledHeaderTitle = styled.div`
     margin: 0 10px;
   }
 `;
-const PanelCombined = ({children, dark, expanded, resizeEffect, setPanel, hideButtons, title}) => {
+const PanelCombined = ({ children, dark, expanded, resizeEffect, setPanel, hideButtons, title }) => {
   const [mouseDown, setMouseDown] = useState(false);
   const [dragAmount, setDragAmount] = useState(null);
   const onMouseDown = () => {
@@ -122,7 +132,6 @@ const PanelCombined = ({children, dark, expanded, resizeEffect, setPanel, hideBu
     if (resizeEffect) {
       resizeEffect(dragAmount);
     }
-
   }, [dragAmount]);
   return (
     <StyledWrapper
@@ -130,25 +139,32 @@ const PanelCombined = ({children, dark, expanded, resizeEffect, setPanel, hideBu
       ref={wrapperRef}
       onMouseMove={(e) => onMouseMove(e)}
       onMouseUp={() => onMouseUp()}
-      onMouseLeave = {() => onMouseUp()}
+      onMouseLeave={() => onMouseUp()}
     >
-      <StyledContainer expanded={expanded}
+      <StyledContainer
+        expanded={expanded}
         style={{
-          width: dragAmount ? `calc(100% - ${dragAmount}px)` : '783px',
-          right: dragAmount ? `calc(-100% + ${dragAmount}px)` : '-783px',
+          width: dragAmount ? `calc(100% - ${dragAmount}px)` : "783px",
+          right: dragAmount ? `calc(-100% + ${dragAmount}px)` : "-783px",
         }}
       >
-        <StyledResizer
-          onMouseDown={() => onMouseDown()}
-        >
-          <div/><div/>
+        <StyledResizer onMouseDown={() => onMouseDown()}>
+          <div />
+          <div />
         </StyledResizer>
         <StyledContentContainer>
           <StyledHeader dark={dark}>
-            <StyledHeaderTitle>
-              {title || "sup"}
-            </StyledHeaderTitle>
-            <svg onClick={() => setPanel(0)} class="mdi-icon " fill="#dedede" height="24" width="24" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path></svg>
+            <StyledHeaderTitle>{title || "sup"}</StyledHeaderTitle>
+            <svg
+              onClick={() => setPanel(0)}
+              class="mdi-icon "
+              fill="#dedede"
+              height="24"
+              width="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"></path>
+            </svg>
           </StyledHeader>
           {children}
         </StyledContentContainer>

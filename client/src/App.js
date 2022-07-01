@@ -3,7 +3,6 @@ import FetchData from 'components/FetchData';
 import Table from 'components/Table';
 import 'App.css';
 import Drawer from 'components/Drawer';
-import DrawerMobile from 'components/DrawerMobile';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { darkTheme } from "data/themeData";
 
@@ -31,7 +30,6 @@ function App() {
         <Table />
       </div>
       <Drawer />
-      <DrawerMobile />
     </ThemeProvider>
   );
 }
