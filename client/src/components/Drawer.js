@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
-import { connect } from 'react-redux';
-import styled from 'styled-components';
-import PanelCombined from './PanelCombined';
-import { hoverImage } from 'actions/mouse';
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import styled from "styled-components";
+import PanelCombined from "./PanelCombined";
 import { isEmpty, isNil, prop, sortBy } from "ramda";
 import { format } from "date-fns";
 import Chart from "components/Chart";
+import { selectSelectedStreamerForDrawer, selectDataHistory } from "reducers";
 
 const isEmptyOrNil = isEmpty || isNil;
 
@@ -29,7 +29,7 @@ const StyledContent = styled.div`
 const StyledRow = styled.div`
   display: flex;
   &:nth-child(odd) {
-    background-color: ${props => props.theme.colorBackgroundSecondary};
+    background-color: ${(props) => props.theme.colorBackgroundSecondary};
   }
   > div {
     flex: 0 0 25%;
@@ -46,7 +46,7 @@ const StyledRow = styled.div`
 const StyledTableHeader = styled.div`
   display: flex;
   font-weight: 700;
-  background-color: ${props => props.theme.colorBackgroundSecondary};
+  background-color: ${(props) => props.theme.colorBackgroundSecondary};
   > div {
     flex: 0 0 25%;
     text-overflow: ellipsis;
@@ -59,46 +59,37 @@ const StyledTableHeader = styled.div`
   }
 `;
 
-const Panel = ({ content, dataHistory, setPanel }) => {
+const Drawer = () => {
+  const content = useSelector(selectSelectedStreamerForDrawer);
+  const dataHistory = useSelector(selectDataHistory);
 
-  const tableData = useMemo(() => (dataHistory[content]) ? sortBy(prop('start_of_30_day_interval'))(dataHistory[content]) : null, [dataHistory, content])
+  const tableData = useMemo(
+    () => (dataHistory[content] ? sortBy(prop("start_of_30_day_interval"))(dataHistory[content]) : null),
+    [dataHistory, content]
+  );
+
   return (
-    <PanelCombined expanded={content} setPanel={setPanel} title={content}>
+    <PanelCombined expanded={content} title={content}>
       <StyledContent>
-        {content && !isEmptyOrNil(tableData) ?
+        {content && !isEmptyOrNil(tableData) ? (
           <>
             <Chart />
             <StyledTableHeader>
-              <div>
-                StartDate (30d)
-              </div>
-              <div>
-                Est. Earn (30d)
-              </div>
-              <div>
-                Rec. Subs
-              </div>
-              <div>
-                Est. Subs
-              </div>
+              <div>StartDate (30d)</div>
+              <div>Est. Earn (30d)</div>
+              <div>Rec. Subs</div>
+              <div>Est. Subs</div>
             </StyledTableHeader>
-            {tableData?.map((val =>
+            {tableData?.map((val) => (
               <StyledRow>
-                <div>
-                  {format(new Date(val.start_of_30_day_interval), "PP")}
-                </div>
-                <div>
-                  ${val.estimated_earnings.toLocaleString()}
-                </div>
-                <div>
-                  {val.recorded_subs.toLocaleString()}
-                </div>
-                <div>
-                  {val.estimated_subs.toLocaleString()}
-                </div>
-              </StyledRow>))}
+                <div>{format(new Date(val.start_of_30_day_interval), "PP")}</div>
+                <div>${val.estimated_earnings.toLocaleString()}</div>
+                <div>{val.recorded_subs.toLocaleString()}</div>
+                <div>{val.estimated_subs.toLocaleString()}</div>
+              </StyledRow>
+            ))}
           </>
-          :
+        ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="64px"
@@ -125,23 +116,10 @@ const Panel = ({ content, dataHistory, setPanel }) => {
               ></animateTransform>
             </circle>
           </svg>
-
-        }
-
+        )}
       </StyledContent>
     </PanelCombined>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    content: state.mouse.content,
-    dataHistory: state.data.dataHistory,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setPanel: (value) => dispatch(hoverImage(value)),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Panel);
+export default Drawer;

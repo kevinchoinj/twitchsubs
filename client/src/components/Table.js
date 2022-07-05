@@ -4,13 +4,13 @@ import styled from "styled-components";
 import { Column, Table, AutoSizer, defaultTableRowRenderer } from "react-virtualized";
 import { assoc, filter, compose, sortBy, toLower, prop, reverse } from "ramda";
 import HeaderFilter from "components/HeaderFilter";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { headerRowRenderer, indexRenderer } from "components/Cells";
 import { initialColumnsVisible, visibleColumnsArray } from "data/variables";
 import MobileSorter from "components/MobileSorter";
-import { selectTableData } from "reducers";
+import { selectDataHistory, selectTableData } from "reducers";
 import { fetchDataSingularHistory } from "actions/data";
-import { hoverImage } from "actions/mouse";
+import { selectStreamerForDrawer } from "actions/ui";
 
 const StyledWrapper = styled.div`
   height: 100vh;
@@ -52,17 +52,7 @@ const StyledLoading = styled.div`
 `;
 export const rowRenderer = (props) => <StyledRow {...props} index={props.index} />;
 
-const HeaderCell = ({
-  dataHistory,
-  dataKey,
-  fetchDataHistory,
-  getMousePosition,
-  label,
-  reversed,
-  sorter,
-  setReversed,
-  setSorter,
-}) => {
+const HeaderCell = ({ dataKey, label, reversed, sorter, setReversed, setSorter }) => {
   return (
     <div
       onClick={() => {
@@ -87,7 +77,10 @@ const HeaderCell = ({
   );
 };
 
-const TableContainer = ({ data, dataHistory, fetchDataHistory, setMouseUsername }) => {
+const TableContainer = () => {
+  const dispatch = useDispatch();
+  const data = useSelector(selectTableData);
+  const dataHistory = useSelector(selectDataHistory);
   const [searchQuery, setSearchQuery] = useState("");
   const [sorter, setSorter] = useState("estimated_earnings");
   const [reversed, setReversed] = useState(false);
@@ -123,13 +116,6 @@ const TableContainer = ({ data, dataHistory, fetchDataHistory, setMouseUsername 
 
   const memoizedSetReversed = useCallback(setReversed, [setReversed]);
   const memoizedSetSorter = useCallback(setSorter, [setSorter]);
-
-  /*
-  useEffect(() => {
-    fetchDataHistory("xqcow");
-    setMouseUsername("xqcow");
-  }, [fetchDataHistory, setMouseUsername]);
-  */
 
   return (
     <StyledWrapper>
@@ -184,12 +170,11 @@ const TableContainer = ({ data, dataHistory, fetchDataHistory, setMouseUsername 
               columnProp={visibleColumnsArray}
               onRowClick={({ rowData }) => {
                 if (!dataHistory[rowData.channel]) {
-                  fetchDataHistory(rowData.channel);
+                  dispatch(fetchDataSingularHistory(rowData.channel));
                 }
-                setMouseUsername(rowData.channel);
+                dispatch(selectStreamerForDrawer(rowData.channel));
                 return null;
               }}
-              // onRowMouseOut={() => setMouseUsername(null)}
             >
               <Column
                 key="menu"
@@ -230,17 +215,4 @@ const TableContainer = ({ data, dataHistory, fetchDataHistory, setMouseUsername 
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    data: selectTableData(state),
-    dataHistory: state.data.dataHistory,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchDataHistory: (username) => dispatch(fetchDataSingularHistory(username)),
-    setMouseUsername: (username) => dispatch(hoverImage(username)),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(TableContainer);
+export default TableContainer;

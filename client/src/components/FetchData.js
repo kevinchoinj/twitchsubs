@@ -1,16 +1,13 @@
-import {useEffect} from 'react';
-import {fetchData} from 'actions/data';
-import {connect} from 'react-redux';
+import { useEffect } from "react";
+import { fetchData } from "actions/data";
+import { useDispatch } from "react-redux";
 
-const FetchData = ({fetchDataAction}) => {
-  useEffect(() => { fetchDataAction() }, [fetchDataAction])
+const FetchData = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
   return null;
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchDataAction: () => dispatch(fetchData()),
-  };
 };
 
-export default connect (null, mapDispatchToProps)(FetchData);
+export default FetchData;

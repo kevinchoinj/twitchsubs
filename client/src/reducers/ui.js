@@ -1,32 +1,24 @@
 import {
-  HOVER_IMAGE,
-  GET_MOUSE_POSITION,
+  SELECT_STREAMER_FOR_DRAWER,
   SET_GRAPH_KEYS,
-} from 'actions/mouse';
+} from 'actions/ui';
 import {
   RESET_DATA_HISTORY,
 } from "actions/data";
 import produce from "immer";
 
 const DEFAULT_STATE = {
-  content: false,
-  mousePosition: { xValue: 0, yValue: 0 },
+  selectedStreamerForDrawer: null,
   graphKeys: [],
 };
 
 const mouseReducer = (state = DEFAULT_STATE, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case GET_MOUSE_POSITION:
-        draft.mousePosition = {
-          xValue: action.xValue,
-          yValue: action.yValue,
-        };
-        break;
-      case HOVER_IMAGE:
-        draft.content = action.image;
-        if (action.image) {
-          draft.graphKeys.push(action.image);
+      case SELECT_STREAMER_FOR_DRAWER:
+        draft.selectedStreamerForDrawer = action.streamerName;
+        if (action.streamerName) {
+          draft.graphKeys.push(action.streamerName);
         }
         break;
       case SET_GRAPH_KEYS:
@@ -34,7 +26,7 @@ const mouseReducer = (state = DEFAULT_STATE, action) =>
         break;
       case RESET_DATA_HISTORY:
         draft.graphKeys = [];
-        draft.content = false;
+        draft.selectedStreamerForDrawer = null;
         break;
       default:
         break;

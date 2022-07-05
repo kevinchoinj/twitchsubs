@@ -1,5 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
+import { useDispatch } from "react-redux";
+import { selectStreamerForDrawer } from "actions/ui";
 
 const animationDrawerOpen = keyframes`
   0% {
@@ -108,7 +110,8 @@ const StyledHeaderTitle = styled.div`
     margin: 0 10px;
   }
 `;
-const PanelCombined = ({ children, dark, expanded, resizeEffect, setPanel, hideButtons, title }) => {
+const PanelCombined = ({ children, expanded, title }) => {
+  const dispatch = useDispatch();
   const [mouseDown, setMouseDown] = useState(false);
   const [dragAmount, setDragAmount] = useState(null);
   const onMouseDown = () => {
@@ -128,11 +131,6 @@ const PanelCombined = ({ children, dark, expanded, resizeEffect, setPanel, hideB
   };
   const wrapperRef = useRef(null);
 
-  useEffect(() => {
-    if (resizeEffect) {
-      resizeEffect(dragAmount);
-    }
-  }, [dragAmount]);
   return (
     <StyledWrapper
       expanded={mouseDown}
@@ -153,10 +151,10 @@ const PanelCombined = ({ children, dark, expanded, resizeEffect, setPanel, hideB
           <div />
         </StyledResizer>
         <StyledContentContainer>
-          <StyledHeader dark={dark}>
+          <StyledHeader>
             <StyledHeaderTitle>{title || "sup"}</StyledHeaderTitle>
             <svg
-              onClick={() => setPanel(0)}
+              onClick={() => dispatch(selectStreamerForDrawer(null))}
               class="mdi-icon "
               fill="#dedede"
               height="24"
