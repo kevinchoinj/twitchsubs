@@ -1,37 +1,34 @@
-import {
-  SELECT_STREAMER_FOR_DRAWER,
-  SET_GRAPH_KEYS,
-} from 'actions/ui';
-import {
-  RESET_DATA_HISTORY,
-} from "actions/data";
-import produce from "immer";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
-const DEFAULT_STATE = {
+export const resetDataHistory = createAction("resetDataHistory");
+
+const initialState = {
   selectedStreamerForDrawer: null,
   graphKeys: [],
 };
 
-const mouseReducer = (state = DEFAULT_STATE, action) =>
-  produce(state, draft => {
-    switch (action.type) {
-      case SELECT_STREAMER_FOR_DRAWER:
-        draft.selectedStreamerForDrawer = action.streamerName;
-        if (action.streamerName) {
-          draft.graphKeys.push(action.streamerName);
-        }
-        break;
-      case SET_GRAPH_KEYS:
-        draft.graphKeys = action.graphKeys;
-        break;
-      case RESET_DATA_HISTORY:
-        draft.graphKeys = [];
-        draft.selectedStreamerForDrawer = null;
-        break;
-      default:
-        break;
-    }
-  }
-  );
+const uiSlice = createSlice({
+  name: "ui",
+  initialState,
+  reducers: {
+    setStreamerForDrawer: (state, action) => {
+      state.selectedStreamerForDrawer = action.payload.streamerName;
+      if (action.payload.streamerName) {
+        state.graphKeys.push(action.payload.streamerName);
+      }
+    },
+    setGraphKeys: (state, action) => {
+      state.graphKeys = action.payload.graphKeys;
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(resetDataHistory, (state, action) => {
+      state.graphKeys = [];
+      state.selectedStreamerForDrawer = null;
+    });
+  },
+});
 
-export default mouseReducer;
+export const { setStreamerForDrawer, setGraphKeys } = uiSlice.actions;
+
+export default uiSlice.reducer;

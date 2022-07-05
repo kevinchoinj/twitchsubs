@@ -3,9 +3,9 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
-import { setGraphKeys } from "actions/ui";
+import { setGraphKeys } from "reducers/ui";
 import styled from "styled-components";
-import { resetDataHistory } from "actions/data";
+import { resetDataHistory } from "reducers/ui";
 import { selectDataHistory, selectGraphKeys } from "reducers";
 import { possibleColors } from "data/variables";
 
@@ -88,8 +88,8 @@ const Chart = () => {
                 checked={includes(value, graphKeys)}
                 onChange={() =>
                   includes(value, graphKeys)
-                    ? dispatch(setGraphKeys(graphKeys.filter((val) => val !== value)))
-                    : dispatch(setGraphKeys([...graphKeys, value]))
+                    ? dispatch(setGraphKeys({ graphKeys: graphKeys.filter((val) => val !== value) }))
+                    : dispatch(setGraphKeys({ graphKeys: [...graphKeys, value] }))
                 }
                 id={value}
               />

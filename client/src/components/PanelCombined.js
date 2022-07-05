@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useDispatch } from "react-redux";
-import { selectStreamerForDrawer } from "actions/ui";
+import { setStreamerForDrawer } from "reducers/ui";
 
 const animationDrawerOpen = keyframes`
   0% {
@@ -154,8 +154,8 @@ const PanelCombined = ({ children, expanded, title }) => {
           <StyledHeader>
             <StyledHeaderTitle>{title || "sup"}</StyledHeaderTitle>
             <svg
-              onClick={() => dispatch(selectStreamerForDrawer(null))}
-              class="mdi-icon "
+              onClick={() => dispatch(setStreamerForDrawer({ streamerName: null }))}
+              className="mdi-icon "
               fill="#dedede"
               height="24"
               width="24"

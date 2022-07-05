@@ -42,7 +42,6 @@ const StyledRow = styled.div`
     }
   }
 `;
-
 const StyledTableHeader = styled.div`
   display: flex;
   font-weight: 700;
@@ -64,7 +63,7 @@ const Drawer = () => {
   const dataHistory = useSelector(selectDataHistory);
 
   const tableData = useMemo(
-    () => (dataHistory[content] ? sortBy(prop("start_of_30_day_interval"))(dataHistory[content]) : null),
+    () => (dataHistory?.[content] ? sortBy(prop("start_of_30_day_interval"))(dataHistory[content]) : null),
     [dataHistory, content]
   );
 
@@ -81,7 +80,7 @@ const Drawer = () => {
               <div>Est. Subs</div>
             </StyledTableHeader>
             {tableData?.map((val) => (
-              <StyledRow>
+              <StyledRow key={val.start_of_30_day_interval}>
                 <div>{format(new Date(val.start_of_30_day_interval), "PP")}</div>
                 <div>${val.estimated_earnings.toLocaleString()}</div>
                 <div>{val.recorded_subs.toLocaleString()}</div>

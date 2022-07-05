@@ -9,8 +9,8 @@ import { headerRowRenderer, indexRenderer } from "components/Cells";
 import { initialColumnsVisible, visibleColumnsArray } from "data/variables";
 import MobileSorter from "components/MobileSorter";
 import { selectDataHistory, selectTableData } from "reducers";
-import { fetchDataSingularHistory } from "actions/data";
-import { selectStreamerForDrawer } from "actions/ui";
+import { fetchDataSingularHistory } from "reducers/data";
+import { setStreamerForDrawer } from "reducers/ui";
 
 const StyledWrapper = styled.div`
   height: 100vh;
@@ -88,6 +88,9 @@ const TableContainer = () => {
     propName !== "channel" ? sortBy(compose(parseInt, prop(propName))) : sortBy(compose(toLower, prop(propName)));
 
   const displayData = useMemo(() => {
+    if (!data) {
+      return [];
+    }
     return compose(
       filter((val) => val?.channel?.toLowerCase().includes(searchQuery.toLowerCase())),
       sorterByProp(sorter)
@@ -152,7 +155,7 @@ const TableContainer = () => {
                       viewBox="0 0 20 20"
                       x="0px"
                       y="0px"
-                      class="ScSvg-sc-1j5mt50-1 kJGhvW"
+                      className="ScSvg-sc-1j5mt50-1 kJGhvW"
                     >
                       <g>
                         <path
@@ -170,9 +173,9 @@ const TableContainer = () => {
               columnProp={visibleColumnsArray}
               onRowClick={({ rowData }) => {
                 if (!dataHistory[rowData.channel]) {
-                  dispatch(fetchDataSingularHistory(rowData.channel));
+                  dispatch(fetchDataSingularHistory({ username: rowData.channel }));
                 }
-                dispatch(selectStreamerForDrawer(rowData.channel));
+                dispatch(setStreamerForDrawer({ streamerName: rowData.channel }));
                 return null;
               }}
             >
@@ -188,6 +191,7 @@ const TableContainer = () => {
                 return (
                   columnsVisible[value.dataKey] && (
                     <Column
+                      key={value.label}
                       label={value.label}
                       dataKey={value.dataKey}
                       width={2000}
