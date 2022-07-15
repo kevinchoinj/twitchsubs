@@ -1,16 +1,17 @@
 import React, { useCallback, useMemo, useState } from "react";
 import "data/table.css";
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { Column, Table, AutoSizer, defaultTableRowRenderer } from "react-virtualized";
-import { assoc, filter, compose, sortBy, toLower, prop, reverse } from "ramda";
+import { filter, compose, sortBy, toLower, prop, reverse } from "ramda";
 import HeaderFilter from "components/HeaderFilter";
 import { useDispatch, useSelector } from "react-redux";
 import { headerRowRenderer, indexRenderer } from "components/Cells";
-import { initialColumnsVisible, visibleColumnsArray } from "data/variables";
+import { visibleColumnsArray } from "data/variables";
 import MobileSorter from "components/MobileSorter";
-import { selectDataHistory, selectTableData } from "reducers";
+import { selectDataHistory, selectTableData, selectTableColumns } from "reducers";
 import { fetchDataSingularHistory } from "reducers/data";
 import { setStreamerForDrawer } from "reducers/ui";
+import { setColumnVisible } from "reducers/table";
 
 const StyledWrapper = styled.div`
   height: 100vh;
@@ -42,6 +43,15 @@ const StyledTableWrapper = styled.div`
 export const StyledRow = styled(defaultTableRowRenderer)`
   background-color: ${(props) => (props.index % 2 === 1 ? props.theme.colorBackgroundSecondary : "transparent")};
 `;
+
+const rotator = keyframes`
+0% {
+  transform: rotate(0deg);
+}
+100% {
+  transform: rotate(360deg);
+}
+`;
 const StyledLoading = styled.div`
   position: fixed;
   width: 100%;
@@ -49,6 +59,16 @@ const StyledLoading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  .circular_progress__object {
+    animation: ${css`
+        ${rotator}`} 1s ease-in-out infinite;
+    stroke-dasharray: 107, 38;
+    position: relative;
+  }
+  .circular_progress__bg {
+    position: absolute;
+  }
 `;
 export const rowRenderer = (props) => <StyledRow {...props} index={props.index} />;
 
@@ -79,6 +99,7 @@ const HeaderCell = ({ dataKey, label, reversed, sorter, setReversed, setSorter }
 
 const TableContainer = () => {
   const dispatch = useDispatch();
+  const columnsVisible = useSelector(selectTableColumns);
   const data = useSelector(selectTableData);
   const dataHistory = useSelector(selectDataHistory);
   const [searchQuery, setSearchQuery] = useState("");
@@ -109,9 +130,8 @@ const TableContainer = () => {
     }
   }, [displayData, reversed, sorter]);
 
-  const [columnsVisible, setColumnsVisible] = useState(initialColumnsVisible);
-  const toggleColumn = (id, payload) => {
-    setColumnsVisible((prev) => assoc(id, payload, prev));
+  const toggleColumn = (id, bool) => {
+    dispatch(setColumnVisible({ id: id, bool: bool }));
   };
   const headerFilterRenderer = () => (
     <HeaderFilter columnsVisible={columnsVisible} toggleColumn={(id, payload) => toggleColumn(id, payload)} />
@@ -214,7 +234,28 @@ const TableContainer = () => {
           )}
         </AutoSizer>
       </StyledTableWrapper>
-      {!data && <StyledLoading>Loading Data :^)</StyledLoading>}
+      {!data && (
+        <StyledLoading>
+          <div>Loading Data :^)</div>
+          <div>
+            <svg className="circular_progress__bg" height="100" width="100">
+              <circle cx="50" cy="50" r="40" stroke="#444" stroke-width="3" fill="none"></circle>
+            </svg>
+            <svg className="circular_progress__object" height="100" width="100">
+              <circle cx="50" cy="50" r="40" stroke="#aaa" stroke-width="3" fill="none">
+                <animate
+                  attributeType="CSS"
+                  attributeName="stroke-dasharray"
+                  from="1,254"
+                  to="247,56"
+                  dur="5s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            </svg>
+          </div>
+        </StyledLoading>
+      )}
     </StyledWrapper>
   );
 };
