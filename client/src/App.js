@@ -1,9 +1,9 @@
-import React from 'react';
-import FetchData from 'components/FetchData';
-import Table from 'components/Table';
-import 'App.css';
-import Drawer from 'components/Drawer';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import React from "react";
+import FetchData from "components/FetchData";
+import Table from "components/Table";
+import "App.css";
+import Drawer from "components/Drawer";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme } from "data/themeData";
 
 const GlobalStyle = createGlobalStyle`

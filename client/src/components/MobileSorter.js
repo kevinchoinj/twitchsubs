@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import SvgIcon from 'components/SvgIcon';
+import React from "react";
+import styled from "styled-components";
+import SvgIcon from "components/SvgIcon";
 
 const StyledMobileSorter= styled.div`
   display: none;
@@ -22,10 +22,10 @@ const StyledMobileSpace = styled.div`
 `;
 
 const mobileSorters = [
-  {key: 'channel', label: 'Name'},
-  {key: 'estimated_earnings', label: 'Est. Earnings (30d)'},
-  {key: 'estimated_subs', label: 'Est. Subs'},
-  {key: 'percentage_gifted', label: '% Gifted'},
+  {key: "channel", label: "Name"},
+  {key: "estimated_earnings", label: "Est. Earnings (30d)"},
+  {key: "estimated_subs", label: "Est. Subs"},
+  {key: "percentage_gifted", label: "% Gifted"},
 ];
 
 const MobileSorter = ({reversed, setReversed, setSorter, sorter}) => {
