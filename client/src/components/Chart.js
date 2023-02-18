@@ -77,6 +77,9 @@ const Chart = () => {
         <StyledOption data-active={graphKey === "percentage_gifted"} onClick={() => setGraphKey("percentage_gifted")}>
           % Gifted
         </StyledOption>
+        <StyledOption data-active={graphKey === "msgs"} onClick={() => setGraphKey("msgs")}>
+          Messages
+        </StyledOption>
       </StyledRow>
       <StyledRow>
         {Object.keys(dataHistory).map((value) => {

@@ -1,7 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useDispatch } from "react-redux";
 import { setStreamerForDrawer } from "reducers/ui";
+import { useSearchParams } from "react-router-dom";
+import { fetchDataSingularHistory } from "reducers/data";
 
 const animationDrawerOpen = keyframes`
   0% {
@@ -131,6 +133,14 @@ const PanelCombined = ({ children, expanded, title }) => {
   };
   const wrapperRef = useRef(null);
 
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("streamer")) {
+      const streamerName = searchParams.get("streamer");
+      dispatch(setStreamerForDrawer({ streamerName: streamerName }));
+      dispatch(fetchDataSingularHistory({ username: streamerName }));
+    }
+  }, [dispatch, searchParams]);
   return (
     <StyledWrapper
       expanded={mouseDown}
