@@ -7,23 +7,24 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        npm install
-    - name: Install dependencies in nested directory
-      run: |
-        cd client
-        npm install --legacy-peer-deps
-    - name: Lint code
-      run: |
-        npm run lintfix
-    - name: Commit changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Update i18n file"
-    - name: Push changes
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install
+      - name: Install dependencies in nested directory
+        run: |
+          cd client
+          npm install --legacy-peer-deps
+      - name: Lint code
+        run: |
+          npm run lintfix
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Lint"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
