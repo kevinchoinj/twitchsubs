@@ -63,7 +63,7 @@ const Drawer = () => {
   const dataHistory = useSelector(selectDataHistory);
 
   const tableData = useMemo(
-    () => (dataHistory?.[content] ? sortBy(prop('start_of_30_day_interval'))(dataHistory[content]) : null),
+    () => (dataHistory?.[content] ? sortBy(prop("start_of_30_day_interval"))(dataHistory[content]) : null),
     [dataHistory, content]
   );
 
