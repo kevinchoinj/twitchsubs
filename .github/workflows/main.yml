@@ -17,4 +17,13 @@ jobs:
         npm install --legacy-peer-deps
     - name: Lint code
       run: |
-        npm run lint
+        npm run lintfix
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update i18n file"
+    - name: Push changes
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
