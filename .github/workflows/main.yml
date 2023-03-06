@@ -20,8 +20,12 @@ jobs:
           npm run lintfix
       - name: Commit changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "Lint"
-          git push
+          if [[ $(git status --porcelain) ]]; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add .
+            git commit -m "Lint"
+            git push
+          else
+            echo "No changes to translation files. Skipping commit and push."
+          fi
