@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import styled from "styled-components";
-import {visibleColumnsArray} from "data/variables";
+import {visibleColumnsArray} from "@/data/variables";
 
 const StyledWrapper = styled.div`
   flex: 1;

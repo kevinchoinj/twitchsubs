@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import svgrPlugin from "vite-plugin-svgr";
 import { createHtmlPlugin } from "vite-plugin-html";
+import path from "path";
+import fs from "fs";
 
 /*
 replace /path with path
@@ -19,30 +21,20 @@ const htmlTransform = () => {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   return {
-    define: {
-      "process.env.NODE_ENV": `"${mode}"`,
-    },
     base: "",
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
     plugins: [
       react(),
       viteTsconfigPaths(),
       svgrPlugin(),
+      reactVirtualized(),
+      /*
       createHtmlPlugin({
-        minify: true,
-        /**
-         * After writing entry here, you will not need to add script tags in `index.html`, the original tags need to be deleted
-         * @default src/main.ts
-         */
-        // entry: "src/main.ts",
-        /**
-         * If you want to store `index.html` in the specified folder, you can modify it, otherwise no configuration is required
-         * @default index.html
-         */
-        // template: "public/index.html",
-
-        /**
-         * Data that needs to be injected into the index.html ejs template
-         */
+        minify: false,
         inject: {
           data: {
             injectScript: `<script> (function() {
@@ -69,19 +61,25 @@ export default defineConfig(({ mode }) => {
               injectTo: "head-prepend",
               tag: "base",
               attrs: {
-                href: "//",
+                href: "/",
               },
             },
           ],
         },
       }),
+      */
       // htmlTransform(),
     ],
+    /*
     build: {
       outDir: "build",
       rollupOptions: {
         external: ["REPLACE_VITE_UIPATH_API_URL/portal_/apollo/packages/portal-shell/3/portal-shell.esm.js"],
       },
+    },
+    */
+    build: {
+      outDir: "build",
     },
     server: {
       open: true,
@@ -105,3 +103,21 @@ export default defineConfig(({ mode }) => {
     },
   };
 });
+
+const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
+export function reactVirtualized() {
+  return {
+    name: "my:react-virtualized",
+    configResolved() {
+      const file = require
+        .resolve("react-virtualized")
+        .replace(
+          path.join("dist", "commonjs", "index.js"),
+          path.join("dist", "es", "WindowScroller", "utils", "onScroll.js")
+        );
+      const code = fs.readFileSync(file, "utf-8");
+      const modified = code.replace(WRONG_CODE, "");
+      fs.writeFileSync(file, modified);
+    },
+  };
+}

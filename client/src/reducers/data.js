@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { resetDataHistory } from "reducers/ui";
+import { resetDataHistory } from "@/reducers/ui";
 
 const initialState = {
   data: null,

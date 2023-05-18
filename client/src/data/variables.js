@@ -1,4 +1,4 @@
-import { linkRenderer, moneyRenderer, numberRenderer } from "components/Cells";
+import { linkRenderer, moneyRenderer, numberRenderer } from "@/components/Cells";
 
 export const LOADING_MESSAGE = "Loading Data for 4000+ streamers...";
 export const HEADER_MESSAGE =

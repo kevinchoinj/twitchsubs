@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo, useState } from "react";
-import "data/table.css";
+import "@/data/table.css";
 import styled, { keyframes, css } from "styled-components";
 import { Column, Table, AutoSizer, defaultTableRowRenderer } from "react-virtualized";
 import { filter, compose, sortBy, toLower, prop, reverse } from "ramda";
-import HeaderFilter from "components/HeaderFilter";
+import HeaderFilter from "@/components/HeaderFilter";
 import { useDispatch, useSelector } from "react-redux";
-import { headerRowRenderer, indexRenderer } from "components/Cells";
-import { visibleColumnsArray } from "data/variables";
-import MobileSorter from "components/MobileSorter";
-import { selectDataHistory, selectTableData, selectTableColumns } from "reducers";
-import { fetchDataSingularHistory } from "reducers/data";
-import { setStreamerForDrawer } from "reducers/ui";
-import { setColumnVisible } from "reducers/table";
+import { headerRowRenderer, indexRenderer } from "@/components/Cells";
+import { visibleColumnsArray } from "@/data/variables";
+import MobileSorter from "@/components/MobileSorter";
+import { selectDataHistory, selectTableData, selectTableColumns } from "@/reducers";
+import { fetchDataSingularHistory } from "@/reducers/data";
+import { setStreamerForDrawer } from "@/reducers/ui";
+import { setColumnVisible } from "@/reducers/table";
 
 const StyledWrapper = styled.div`
   height: 100vh;

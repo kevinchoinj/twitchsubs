@@ -1,6 +1,6 @@
-import data from "reducers/data";
-import ui from "reducers/ui";
-import table from "reducers/table";
+import data from "@/reducers/data";
+import ui from "@/reducers/ui";
+import table from "@/reducers/table";
 
 const reducers = {
   data,

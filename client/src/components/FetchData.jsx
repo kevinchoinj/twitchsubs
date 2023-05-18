@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fetchData } from "reducers/data";
+import { fetchData } from "@/reducers/data";
 import { useDispatch } from "react-redux";
 
 const FetchData = () => {
