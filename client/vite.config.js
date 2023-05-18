@@ -32,7 +32,6 @@ export default defineConfig(({ mode }) => {
       viteTsconfigPaths(),
       svgrPlugin(),
       reactVirtualized(),
-      /*
       createHtmlPlugin({
         minify: false,
         inject: {
@@ -67,7 +66,6 @@ export default defineConfig(({ mode }) => {
           ],
         },
       }),
-      */
       // htmlTransform(),
     ],
     /*

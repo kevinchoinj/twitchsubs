@@ -13,6 +13,7 @@ client/.pnp.js
 client/coverage
 
 client/build
+client/dist
 
 client/.DS_Store
 client/.env.local
