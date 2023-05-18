@@ -102,7 +102,7 @@ export default defineConfig(({ mode }) => {
   };
 });
 
-const WRONG_CODE = `import { bpfrpt_proptype_WindowScroller } from "../WindowScroller.js";`;
+const WRONG_CODE = "import { bpfrpt_proptype_WindowScroller } from \"../WindowScroller.js\";";
 export function reactVirtualized() {
   return {
     name: "my:react-virtualized",
