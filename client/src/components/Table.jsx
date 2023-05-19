@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import "data/table.css";
+import "@/data/table.css";
 import styled, { keyframes, css } from "styled-components";
 import { Column, Table, AutoSizer, defaultTableRowRenderer } from "react-virtualized";
 import { filter, compose, sortBy, toLower, prop, reverse } from "ramda";
