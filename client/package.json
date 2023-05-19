@@ -28,6 +28,7 @@
     "start:windows:periodic": "vite",
     "start:windows": "set VITE_API_URL=alpha&& vite",
     "build": "vite build",
+    "preview": "vite build && vite preview",
     "test-watch": "vitest watch",
     "test": "snyk test && vitest run",
     "test:unit": "vitest run",

@@ -4,8 +4,8 @@ import styled from "styled-components";
 import PanelCombined from "./PanelCombined";
 import { isEmpty, isNil, prop, sortBy } from "ramda";
 import { format } from "date-fns";
-import Chart from "components/Chart";
-import { selectSelectedStreamerForDrawer, selectDataHistory } from "reducers";
+import Chart from "@/components/Chart";
+import { selectSelectedStreamerForDrawer, selectDataHistory } from "@/reducers";
 
 const isEmptyOrNil = isEmpty || isNil;
 

@@ -1,7 +1,7 @@
-import reducers from "./reducers/index.js";
+import reducers from "@/reducers/index.js";
 import logger from "redux-logger";
 import { configureStore } from "@reduxjs/toolkit";
-import { loadState, saveState } from "./localStorage";
+import { loadState, saveState } from "@/localStorage";
 
 const preloadedState = loadState();
 

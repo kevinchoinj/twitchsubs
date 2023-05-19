@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useDispatch } from "react-redux";
-import { setStreamerForDrawer } from "reducers/ui";
+import { setStreamerForDrawer } from "@/reducers/ui";
 import { useSearchParams } from "react-router-dom";
-import { fetchDataSingularHistory } from "reducers/data";
+import { fetchDataSingularHistory } from "@/reducers/data";
 
 const animationDrawerOpen = keyframes`
   0% {

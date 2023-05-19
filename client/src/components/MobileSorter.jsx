@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SvgIcon from "components/SvgIcon";
+import SvgIcon from "@/components/SvgIcon";
 
 const StyledMobileSorter= styled.div`
   display: none;

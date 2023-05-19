@@ -3,11 +3,11 @@ import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
-import { setGraphKeys } from "reducers/ui";
+import { setGraphKeys } from "@/reducers/ui";
 import styled from "styled-components";
-import { resetDataHistory } from "reducers/ui";
-import { selectDataHistory, selectGraphKeys } from "reducers";
-import { possibleColors } from "data/variables";
+import { resetDataHistory } from "@/reducers/ui";
+import { selectDataHistory, selectGraphKeys } from "@/reducers";
+import { possibleColors } from "@/data/variables";
 
 const StyledRow = styled.div`
   display: flex;
